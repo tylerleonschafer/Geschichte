@@ -14,19 +14,49 @@
   --r:14px;
 }
 @media (prefers-color-scheme:dark){
-  :root{--bg:#16140f;--card:#211e18;--ink:#f1ebdf;--muted:#a79f92;--line:#383228;--goldsoft:#3a2f0e;--oksoft:#16301f;--badsoft:#3a1714;--black:#f1ebdf}
+  :root:not([data-theme="light"]){--bg:#16140f;--card:#211e18;--ink:#f1ebdf;--muted:#a79f92;--line:#383228;--goldsoft:#3a2f0e;--oksoft:#16301f;--badsoft:#3a1714;--black:#f1ebdf;--red:#e0574d;--ok:#5cbf85;--bad:#e0574d;color-scheme:dark}
 }
+:root[data-theme="dark"]{--bg:#16140f;--card:#211e18;--ink:#f1ebdf;--muted:#a79f92;--line:#383228;--goldsoft:#3a2f0e;--oksoft:#16301f;--badsoft:#3a1714;--black:#f1ebdf;--red:#e0574d;--ok:#5cbf85;--bad:#e0574d;color-scheme:dark}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;padding-bottom:84px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;padding-bottom:96px}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+h1,h2{text-wrap:balance}
+.themebtn{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:max(14px,env(safe-area-inset-right,0px))}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{border-radius:0;background:transparent;color:var(--ink);font-weight:600;padding:7px 12px;font-size:.85rem}
+.seg button.on{background:var(--ink);color:var(--bg)}
+.tl.keyonly .ev:not(.key){display:none}
+.kbd{display:inline-block;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:0 5px;font-size:.75rem;font-family:ui-monospace,monospace}
+/* blitz */
+.blitz-st{font-family:Fraunces,serif;font-size:1.25rem;font-weight:700;text-align:center;min-height:5.2em;display:flex;align-items:center;justify-content:center;padding:12px;border:1px solid var(--line);border-radius:var(--r);background:var(--bg);margin:10px 0}
+.blitz-st.good{background:var(--oksoft);border-color:var(--ok)}
+.blitz-st.wrong{background:var(--badsoft);border-color:var(--bad)}
+.blitz-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.blitz-btns button{padding:16px;font-size:1.05rem}
+.btn-ok{background:var(--ok);color:#fff}
+.btn-bad{background:var(--bad);color:#fff}
+.tnum{font-variant-numeric:tabular-nums}
+/* review */
+.rev{border-left:4px solid var(--bad);background:var(--badsoft);padding:10px 12px;border-radius:0 10px 10px 0;margin:8px 0;text-align:left}
+.rev small{display:block;color:var(--muted)}
+/* spickzettel */
+.spick{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.spick .card{margin:0;min-width:0}
+.spick ul{margin:.3em 0;padding-left:1.1em}
+.spick li{margin:.15em 0}
+.spick h3{font-size:1.05rem;border-bottom:2px solid var(--gold);padding-bottom:4px}
+/* rank */
+.rank li .n{color:var(--red)}
 h1,h2,h3{font-family:Fraunces,Georgia,serif;line-height:1.15;margin:0 0 .5em}
 h2{font-size:1.6rem}
 h3{font-size:1.15rem}
 .flag{height:6px;background:linear-gradient(90deg,#1d1a16 0 33.3%,var(--red) 33.3% 66.6%,var(--gold) 66.6%)}
-header.hero{padding:28px 18px 18px;max-width:900px;margin:auto}
+header.hero{padding:28px 18px 18px;max-width:900px;margin:auto;position:relative}
 .hero h1{font-size:2.2rem}
 .hero p{color:var(--muted);margin:.3em 0 1em}
-.wrap{max-width:900px;margin:auto;padding:0 14px}
+.wrap{max-width:900px;margin:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin:14px 0}
 .muted{color:var(--muted)}
 .pill{display:inline-block;font-size:.75rem;font-weight:600;padding:3px 9px;border-radius:99px;background:var(--goldsoft);color:var(--ink);margin-right:6px}
@@ -36,7 +66,7 @@ button.small{padding:6px 10px;font-size:.85rem}
 button:disabled{opacity:.4;cursor:default}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 /* nav */
-nav.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;overflow-x:auto;z-index:20;padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;overflow-x:auto;z-index:20;padding:6px max(4px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(4px,env(safe-area-inset-left,0px))}
 nav.tabs a{flex:1 0 auto;text-align:center;text-decoration:none;color:var(--muted);font-size:.72rem;font-weight:600;padding:6px 10px;border-radius:10px;white-space:nowrap}
 nav.tabs a span{display:block;font-size:1.25rem;line-height:1.2}
 nav.tabs a.on{color:var(--ink);background:var(--goldsoft)}
@@ -130,13 +160,14 @@ th{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mut
 <!-- ========== HOME ========== -->
 <section class="view" id="v-start">
 <header class="hero">
+  <button class="ghost small themebtn" id="themeBtn" aria-label="Farbschema wechseln">◐ Auto</button>
   <span class="pill">Klausurvorbereitung Geschichte</span>
   <h1>Die Revolution 1848/49 und ihr Scheitern</h1>
   <p>Alles vom Arbeitsblatt (A1–A10) zum Lesen, Üben und Abfragen. Unten in der Leiste wechselst du zwischen den Bereichen.</p>
   <div class="card">
     <div class="row" style="justify-content:space-between"><b>Dein Lernfortschritt</b><span id="pct">0 %</span></div>
     <div class="bar" style="margin-top:8px"><i id="pbar"></i></div>
-    <p class="muted" style="font-size:.85rem;margin:.6em 0 0">Zählt erledigte Aufgaben A1–A10, gelernte Karteikarten und dein bestes Quiz-Ergebnis. Wird auf diesem Gerät gespeichert.</p>
+    <p class="muted" style="font-size:.85rem;margin:.6em 0 0">Zählt erledigte Aufgaben A1–A10, gelernte Karteikarten und dein bestes Ergebnis im kompletten Quiz. Wird nur in deinem Browser gespeichert.</p>
   </div>
 </header>
 <div class="wrap">
@@ -152,7 +183,9 @@ th{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mut
     <a class="tile" href="#spiele"><span class="ico">🧩</span><b>4 · Übungsspiele</b><span class="muted">Sortieren, zuordnen, Lückentext</span></a>
     <a class="tile" href="#aufgaben"><span class="ico">📝</span><b>5 · Aufgaben A1–A10</b><span class="muted">Selbst antworten, Lösung aufdecken</span></a>
     <a class="tile" href="#quiz"><span class="ico">🎯</span><b>6 · Abschlussquiz</b><span class="muted">25 Fragen, zufällige Reihenfolge</span></a>
-    <a class="tile" href="#scheitern"><span class="ico">💥</span><b>Warum scheiterte sie?</b><span class="muted">Ursachen und Folgen auf einen Blick</span></a>
+    <a class="tile" href="#scheitern"><span class="ico">💥</span><b>Warum scheiterte sie?</b><span class="muted">Ursachen, Folgen, selbst gewichten</span></a>
+    <a class="tile" href="#spiele" data-jump="g6"><span class="ico">⚡</span><b>Blitzrunde</b><span class="muted">60 Sekunden: richtig oder falsch?</span></a>
+    <a class="tile" href="#spick"><span class="ico">📄</span><b>Spickzettel</b><span class="muted">Alles Wichtige auf einer Seite</span></a>
   </div>
   <div class="card">
     <h3>Operatoren: was die Aufgaben verlangen</h3>
@@ -173,6 +206,7 @@ th{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mut
 <!-- ========== ZEITLEISTE ========== -->
 <section class="view" id="v-zeitleiste"><div class="wrap">
   <header class="hero" style="padding-left:0"><span class="pill">Thema 1</span><h2>Zeitleiste: Vorgeschichte, Verlauf, Scheitern</h2><p class="muted">Tippe auf „Mehr“ für Hintergründe. Rot umrandete Punkte sind besonders klausurrelevant (A1).</p></header>
+  <div class="row" style="margin-bottom:14px"><div class="seg" role="group" aria-label="Filter"><button class="on" id="tlAll">Alle Ereignisse</button><button id="tlKey">Nur klausurrelevant</button></div><button class="ghost small" id="tlOpen">Alles aufklappen</button></div>
   <div class="tl" id="tl"></div>
   <div class="card"><b>Merksatz:</b> Februar (Paris) → März (Wien, Berlin) → März/April (Vorparlament) → Mai (Paulskirche) → Dezember (Grundrechte) → März 1849 (Verfassung) → April 1849 (Krone abgelehnt) → Juli 1849 (Rastatt, Ende).</div>
 </div></section>
@@ -223,7 +257,7 @@ th{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mut
 <!-- ========== KARTEIKARTEN ========== -->
 <section class="view" id="v-karten"><div class="wrap">
   <header class="hero" style="padding-left:0"><span class="pill">Thema 3 · A2</span><h2>Karteikarten</h2><p class="muted">Karte antippen zum Umdrehen. Dann ehrlich einschätzen: gewusst oder nochmal?</p></header>
-  <div class="row"><span id="fcInfo" class="muted"></span></div>
+  <div class="row" style="justify-content:space-between"><span id="fcInfo" class="muted"></span><span class="muted" style="font-size:.8rem">Tastatur: <span class="kbd">Leertaste</span> umdrehen · <span class="kbd">→</span> gewusst · <span class="kbd">←</span> nochmal</span></div>
   <div class="flip" id="flip"><div class="in"><div class="face front"><div class="big" id="fcFront"></div><div class="hint">antippen zum Umdrehen</div></div><div class="face back"><div id="fcBack"></div></div></div></div>
   <div class="row" style="justify-content:center">
     <button class="ghost" id="fcAgain">↺ Nochmal</button>
@@ -275,6 +309,18 @@ th{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mut
     <p class="muted">Rate anhand der Hinweise. Jeder Hinweis macht es leichter.</p>
     <div id="who"></div>
   </div>
+
+  <div class="card" id="g6">
+    <h3>⚡ Spiel 6: Blitzrunde</h3>
+    <p class="muted">60 Sekunden. Stimmt die Aussage oder nicht? Jede richtige Antwort +1, falsche −1. Tastatur: <span class="kbd">R</span> richtig, <span class="kbd">F</span> falsch.</p>
+    <div id="blitz"></div>
+  </div>
+
+  <div class="card" id="g7">
+    <h3>💬 Spiel 7: Wer sagte das?</h3>
+    <p class="muted">Berühmte Zitate aus der Revolution. Ordne sie der richtigen Person zu.</p>
+    <div id="zitat"></div>
+  </div>
 </div></section>
 
 <!-- ========== AUFGABEN ========== -->
@@ -296,6 +342,14 @@ th{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mut
     <div class="card"><h3>👷 Soziale Spaltung</h3>Arbeiter und Bauern waren im Parlament kaum vertreten. Bauern gaben sich nach Abschaffung feudaler Lasten oft zufrieden, die Revolution verlor Rückhalt.</div>
   </div>
   <div class="card" style="margin-top:14px">
+    <h3>Übung: Gründe gewichten</h3>
+    <p class="muted" style="margin-top:0">Bring die Gründe in deine Reihenfolge, wichtigster oben. Dann begründe kurz deinen Platz 1. Genau das wird in einer Erörterung verlangt.</p>
+    <ul class="olist rank" id="rank"></ul>
+    <textarea id="rankNote" placeholder="Platz 1 ist am wichtigsten, weil …" style="margin-top:8px"></textarea>
+    <div class="row" style="margin-top:8px"><button class="small" id="rankCmp">Mit Musterurteil vergleichen</button></div>
+    <div class="sol" id="rankSol"><b>Musterurteil:</b> Viele Historiker sehen die <b>fehlende Machtbasis</b> als Hauptgrund: Ohne Armee und Verwaltung konnte das Parlament nichts gegen die Fürsten durchsetzen. Die <b>Uneinigkeit</b> und das <b>lange Beraten</b> gaben den Fürsten Zeit, sich zu erholen. Die <b>Ablehnung der Krone</b> war der <b>Auslöser</b> des Endes, nicht die eigentliche Ursache. Andere Reihenfolgen sind möglich, wenn du sie gut begründest.</div>
+  </div>
+  <div class="card" style="margin-top:14px">
     <h3>Folgen: Gescheitert, aber nicht folgenlos</h3>
     <table>
       <tr><th>Kurzfristig</th><th>Langfristig</th></tr>
@@ -306,6 +360,50 @@ th{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mut
     </table>
   </div>
   <div class="card" style="border-left:5px solid var(--gold)"><b>Klausur-Tipp:</b> Schreib nicht nur Gründe auf, sondern gewichte sie. Ein häufiges Urteil: Der <b>entscheidende</b> Grund war die fehlende Machtbasis. Die Ablehnung der Krone war nur der <b>Auslöser</b> des endgültigen Scheiterns, weil sie zeigte, dass das Parlament ohne die Fürsten nichts durchsetzen konnte.</div>
+</div></section>
+
+<!-- ========== SPICKZETTEL ========== -->
+<section class="view" id="v-spick"><div class="wrap">
+  <header class="hero" style="padding-left:0"><span class="pill">Kurz vor der Klausur</span><h2>Spickzettel</h2><p class="muted">Das Wichtigste auf einen Blick. Zum Wiederholen am Abend vorher oder in der Pause.</p></header>
+  <div class="spick">
+    <div class="card"><h3>Die 8 Daten, die sitzen müssen</h3><table class="tnum">
+      <tr><td><b>27.05.1832</b></td><td>Hambacher Fest</td></tr>
+      <tr><td><b>Feb. 1848</b></td><td>Februarrevolution Paris</td></tr>
+      <tr><td><b>13.03.1848</b></td><td>Metternich tritt zurück</td></tr>
+      <tr><td><b>18./19.03.1848</b></td><td>Barrikaden in Berlin</td></tr>
+      <tr><td><b>18.05.1848</b></td><td>Nationalversammlung Paulskirche</td></tr>
+      <tr><td><b>28.03.1849</b></td><td>Reichsverfassung beschlossen</td></tr>
+      <tr><td><b>03.04.1849</b></td><td>FW IV. lehnt Krone ab</td></tr>
+      <tr><td><b>23.07.1849</b></td><td>Rastatt fällt, Ende</td></tr></table></div>
+    <div class="card"><h3>Märzforderungen</h3><ul>
+      <li><b>Freiheit:</b> Presse, Meinung, Versammlung, Schwurgerichte</li>
+      <li><b>Einheit:</b> Nationalstaat, gesamtdeutsches Parlament</li>
+      <li><b>Soziales:</b> Ende feudaler Lasten, bessere Lebensbedingungen</li></ul></div>
+    <div class="card"><h3>Die drei Lager</h3><ul>
+      <li><b>Liberale:</b> konstitutionelle Monarchie, Grundrechte, Wahlrecht nach Besitz</li>
+      <li><b>Demokraten:</b> Republik, Volkssouveränität, gleiches Wahlrecht</li>
+      <li><b>Konservative:</b> Monarchie, Gottesgnadentum, Adelsvorrechte</li></ul></div>
+    <div class="card"><h3>Paulskirchenverfassung</h3><ul>
+      <li>Konstitutionelle <b>Erbmonarchie</b> mit Kaiser</li>
+      <li>Reichstag = Staatenhaus + Volkshaus</li>
+      <li>Grundrechte, unabhängige Gerichte</li>
+      <li>Allgemeines Wahlrecht für <b>Männer</b></li>
+      <li>Kaiser: nur <b>aufschiebendes</b> Veto</li>
+      <li>Kleindeutsch: ohne Österreich</li></ul></div>
+    <div class="card"><h3>Warum gescheitert?</h3><ul>
+      <li>Keine Machtbasis (Armee, Verwaltung)</li>
+      <li>Revolutionäre uneinig</li>
+      <li>Zu langes Beraten, Fürsten erholen sich</li>
+      <li>Streit groß- oder kleindeutsch</li>
+      <li>Krone abgelehnt (Auslöser)</li>
+      <li>Militärische Gegenrevolution</li></ul></div>
+    <div class="card"><h3>Folgen</h3><ul>
+      <li>Kurz: Reaktion, Verfolgung, Auswanderung</li>
+      <li>Lang: Vorbild für Weimar 1919 und Grundgesetz 1949</li>
+      <li>Schwarz-Rot-Gold als Symbol der Demokratie</li>
+      <li>Einheit kommt 1871 „von oben“ (Bismarck)</li></ul></div>
+  </div>
+  <p class="muted" style="margin:18px 0 30px">Unsicher bei einem Punkt? <a href="#karten">Karteikarten</a> oder <a href="#quiz">Quiz</a>.</p>
 </div></section>
 
 <!-- ========== QUIZ ========== -->
@@ -329,7 +427,7 @@ th{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mut
 <script>
 /* ---------- storage ---------- */
 const KEY='rev1848';
-let S={tasks:{},cards:{},best:0,notes:{}};
+let S={tasks:{},cards:{},best:0,notes:{},blitz:0,rank:null,rankNote:''};
 try{const s=JSON.parse(localStorage.getItem(KEY));if(s)S=Object.assign(S,s);}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} progress();}
 const $=s=>document.querySelector(s);
@@ -337,12 +435,23 @@ function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clea
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 
 /* ---------- routing ---------- */
-const views=['start','zeitleiste','lager','karten','spiele','aufgaben','scheitern','quiz'];
-function route(){let h=location.hash.slice(1);if(!views.includes(h))h='start';
+const views=['start','zeitleiste','lager','karten','spiele','aufgaben','scheitern','quiz','spick'];
+let VIEW='start',JUMP=null;
+function route(){let h=location.hash.slice(1);if(!views.includes(h))h='start';VIEW=h;
   document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+h));
   document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+h));
+  if(JUMP){const el=document.getElementById(JUMP);JUMP=null;if(el){setTimeout(()=>el.scrollIntoView({block:'start'}),30);return;}}
   window.scrollTo(0,0);}
 window.addEventListener('hashchange',route);
+document.querySelectorAll('[data-jump]').forEach(a=>a.addEventListener('click',()=>{JUMP=a.dataset.jump;if(location.hash===a.getAttribute('href'))route();}));
+
+/* ---------- theme ---------- */
+const THEMES=[['auto','◐ Auto'],['light','☀ Hell'],['dark','☾ Dunkel']];
+let theme='auto';try{theme=localStorage.getItem('rev1848-theme')||'auto';}catch(e){}
+function applyTheme(){const r=document.documentElement;if(theme==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',theme);
+ $('#themeBtn').textContent=(THEMES.find(t=>t[0]===theme)||THEMES[0])[1];}
+$('#themeBtn').onclick=()=>{const i=THEMES.findIndex(t=>t[0]===theme);theme=THEMES[(i+1)%3][0];try{localStorage.setItem('rev1848-theme',theme);}catch(e){}applyTheme();};
+applyTheme();
 
 /* ---------- timeline ---------- */
 const TL=[
@@ -381,6 +490,9 @@ const TL=[
 (function(){let h='';TL.forEach(e=>{if(e.p){h+=`<div class="phase">${e.p}</div>`;return;}
  h+=`<div class="ev ${e.key?'key':''}"><div class="d">${e.d}</div><div class="t">${e.t}</div><details><summary>Mehr</summary><div>${e.x}</div></details></div>`;});
  $('#tl').innerHTML=h;})();
+$('#tlAll').onclick=()=>{$('#tl').classList.remove('keyonly');$('#tlAll').classList.add('on');$('#tlKey').classList.remove('on');};
+$('#tlKey').onclick=()=>{$('#tl').classList.add('keyonly');$('#tlKey').classList.add('on');$('#tlAll').classList.remove('on');};
+$('#tlOpen').onclick=()=>{const d=document.querySelectorAll('#tl details'),open=![...d].every(x=>x.open);d.forEach(x=>x.open=open);$('#tlOpen').textContent=open?'Alles zuklappen':'Alles aufklappen';};
 
 /* ---------- flashcards ---------- */
 const CARDS=[
@@ -479,6 +591,72 @@ function whoRender(){const w=WHO[wi];const opts=shuffle(WHO.map(x=>x.a));
  document.querySelectorAll('#wOpts .opt').forEach(b=>b.onclick=()=>{const ok=b.textContent===w.a;b.classList.add(ok?'good':'wrong');if(ok){document.querySelectorAll('#wOpts .opt').forEach(x=>x.disabled=true);toast(wh===1?'🔥 Mit nur einem Hinweis!':'✓ Richtig!');}});}
 whoRender();
 
+/* ---------- blitz ---------- */
+const BL=[
+ ['Die Nationalversammlung tagte in der Frankfurter Paulskirche.',1],
+ ['Metternich trat am 13. März 1848 zurück.',1],
+ ['Friedrich Wilhelm IV. nahm die Kaiserkrone 1849 an.',0],
+ ['Die Paulskirchenverfassung sah eine Republik vor.',0],
+ ['Der Kaiser hatte nach der Verfassung nur ein aufschiebendes Veto.',1],
+ ['Frauen durften zum Volkshaus wählen.',0],
+ ['Die kleindeutsche Lösung schloss Österreich aus.',1],
+ ['Die großdeutsche Lösung sollte ohne Österreich sein.',0],
+ ['Demokraten forderten Volkssouveränität.',1],
+ ['Liberale wollten die Monarchie abschaffen.',0],
+ ['Konservative beriefen sich auf das Gottesgnadentum.',1],
+ ['Das Vorparlament bereitete die Wahl der Nationalversammlung vor.',1],
+ ['Das Hambacher Fest fand 1848 statt.',0],
+ ['Die Revolution endete mit dem Fall der Festung Rastatt.',1],
+ ['Die Nationalversammlung besaß eine eigene starke Armee.',0],
+ ['Robert Blum wurde im November 1848 in Wien hingerichtet.',1],
+ ['Der Waffenstillstand von Malmö zeigte die Machtlosigkeit der Nationalversammlung.',1],
+ ['Arbeiter und Bauern stellten die Mehrheit der Abgeordneten.',0],
+ ['Die Februarrevolution 1848 fand in Paris statt.',1],
+ ['Die Reichsverfassung wurde am 28. März 1849 verabschiedet.',1],
+ ['In Berlin kam es im März 1848 zu Barrikadenkämpfen.',1],
+ ['Heinrich von Gagern war Präsident der Nationalversammlung.',1],
+ ['Die Paulskirchenverfassung trat 1849 im ganzen Reich in Kraft.',0],
+ ['Eine oktroyierte Verfassung wird von oben erlassen.',1],
+ ['Der Deutsche Bund war ein fester Nationalstaat.',0],
+ ['Die Paulskirchenverfassung war Vorbild für das Grundgesetz.',1],
+ ['Erbkaisertum heißt: Der Kaiser wird alle paar Jahre neu gewählt.',0],
+ ['Die Reichsverfassungskampagne fand in Sachsen, der Pfalz und Baden statt.',1],
+ ['Friedrich Wilhelm IV. ritt am 21. März 1848 mit schwarz-rot-goldener Armbinde durch Berlin.',1],
+ ['Die Fürsten schlugen die Märzrevolution sofort militärisch nieder.',0],
+ ['Das Rumpfparlament wich nach Stuttgart aus.',1],
+ ['Die Karlsbader Beschlüsse brachten Pressefreiheit.',0]
+];
+let bl={on:false,t:0,sc:0,q:[],i:0,tm:null,lock:false,wrong:[]};
+function blIdle(msg){clearInterval(bl.tm);bl.on=false;$('#blitz').innerHTML=`${msg||''}<div class="row" style="justify-content:space-between"><span class="muted">Rekord: <b class="tnum">${S.blitz||0}</b> Punkte</span><button id="blGo">⚡ Start</button></div>`;$('#blGo').onclick=blStart;}
+function blStart(){bl={on:true,t:60,sc:0,q:shuffle(BL),i:0,tm:null,lock:false,wrong:[]};
+ $('#blitz').innerHTML=`<div class="row" style="justify-content:space-between"><span class="tnum" style="font-weight:700">⏱ <span id="blT">60</span> s</span><span class="tnum" style="font-weight:700">Punkte: <span id="blS">0</span></span></div><div class="bar" style="margin-top:6px"><i id="blBar" style="width:100%;transition:width 1s linear"></i></div><div class="blitz-st" id="blQ"></div><div class="blitz-btns"><button class="btn-ok" id="blR">✓ Richtig</button><button class="btn-bad" id="blF">✗ Falsch</button></div>`;
+ $('#blR').onclick=()=>blAns(1);$('#blF').onclick=()=>blAns(0);blShow();
+ bl.tm=setInterval(()=>{bl.t--;$('#blT').textContent=bl.t;$('#blBar').style.width=(bl.t/60*100)+'%';if(bl.t<=0)blEnd();},1000);}
+function blShow(){if(bl.i>=bl.q.length){bl.q=shuffle(BL);bl.i=0;}const e=$('#blQ');e.className='blitz-st';e.textContent=bl.q[bl.i][0];}
+function blAns(a){if(!bl.on||bl.lock)return;const it=bl.q[bl.i],ok=a===it[1];bl.sc+=ok?1:-1;if(!ok)bl.wrong.push(it);$('#blS').textContent=bl.sc;
+ $('#blQ').className='blitz-st '+(ok?'good':'wrong');bl.lock=true;setTimeout(()=>{bl.lock=false;bl.i++;if(bl.on)blShow();},ok?250:700);}
+function blEnd(){const sc=bl.sc,rec=sc>(S.blitz||0);if(rec){S.blitz=sc;save();}
+ const w=[...new Map(bl.wrong.map(x=>[x[0],x])).values()];
+ blIdle(`<div style="text-align:center"><div class="score tnum">${sc}</div><p>${rec?'🏆 Neuer Rekord!':'Punkte in 60 Sekunden'}</p></div>${w.length?`<p class="muted" style="margin-bottom:4px">Daneben lagst du bei:</p>${w.map(x=>`<div class="rev">${x[0]}<small>Diese Aussage ist <b>${x[1]?'richtig':'falsch'}</b>.</small></div>`).join('')}`:''}`);}
+blIdle();
+
+/* ---------- zitate ---------- */
+const ZT=[
+ ['„Preußen geht fortan in Deutschland auf.“','Friedrich Wilhelm IV.','Aus seiner Proklamation „An meine lieben Berliner“ vom 21. März 1848, am Tag des Umritts.'],
+ ['Die Krone sei ein „Reif aus Dreck und Letten“ mit dem „Ludergeruch der Revolution“.','Friedrich Wilhelm IV.','So schrieb der König in einem Brief über die Kaiserkrone, die ihm das Parlament anbieten wollte.'],
+ ['„Ich sterbe für die deutsche Freiheit, für die ich gekämpft habe.“','Robert Blum','Seine letzten Worte vor der Hinrichtung in Wien am 9. November 1848.'],
+ ['„Ich tue einen kühnen Griff … Wir müssen die provisorische Zentralgewalt selbst schaffen.“','Heinrich von Gagern','Der „kühne Griff“ im Juni 1848: Die Nationalversammlung setzte ohne die Fürsten einen Reichsverweser ein.'],
+ ['„Wenn Frankreich niest, bekommt Europa einen Schnupfen.“','Klemens von Metternich','Metternich zugeschrieben: Revolutionen in Paris sprangen auf ganz Europa über, so auch im Februar 1848.']
+];
+const ZP=['Friedrich Wilhelm IV.','Robert Blum','Heinrich von Gagern','Klemens von Metternich'];
+let zi=0,zok=0,zq=shuffle(ZT);
+function zRender(){if(zi>=zq.length){$('#zitat').innerHTML=`<p style="text-align:center"><b class="tnum">${zok}/${zq.length}</b> richtig</p><div class="row" style="justify-content:center"><button class="ghost small" id="zAgain">Nochmal</button></div>`;$('#zAgain').onclick=()=>{zi=0;zok=0;zq=shuffle(ZT);zRender();};return;}
+ const z=zq[zi];$('#zitat').innerHTML=`<p class="muted">Zitat ${zi+1}/${zq.length}</p><blockquote style="font-family:Fraunces,serif;font-size:1.15rem;margin:0 0 10px;padding-left:12px;border-left:4px solid var(--red)">${z[0]}</blockquote>${ZP.map(o=>`<button class="opt">${o}</button>`).join('')}<div class="expl" id="ze"></div><div class="row" style="margin-top:8px"><button class="small" id="zn" hidden>Weiter →</button></div>`;
+ document.querySelectorAll('#zitat .opt').forEach(b=>b.onclick=()=>{const ok=b.textContent===z[1];if(ok)zok++;document.querySelectorAll('#zitat .opt').forEach(x=>{x.disabled=true;if(x.textContent===z[1])x.classList.add('good');});if(!ok)b.classList.add('wrong');
+  $('#ze').style.display='block';$('#ze').innerHTML=(ok?'✓ ':'✗ ')+z[2];$('#zn').hidden=false;});
+ $('#zn').onclick=()=>{zi++;zRender();};}
+zRender();
+
 /* ---------- tasks A1-A10 ---------- */
 const TASKS=[
 {id:'A1',q:'Ordnen Sie die folgenden Ereignisse chronologisch.',s:`<ol>
@@ -541,12 +719,13 @@ const TASKS=[
 <ul class="add" style="font-style:normal;color:var(--ink)"><li>Die Verfassung hatte kein Staatsoberhaupt und konnte nicht in Kraft treten. Das Hauptziel der Nationalversammlung war damit gescheitert.</li><li>Österreich, Preußen und weitere Staaten erkannten die Verfassung nicht an und riefen ihre Abgeordneten ab.</li><li>Die Nationalversammlung zerfiel, ein Rumpfparlament wich nach Stuttgart aus und wurde am 18. Juni 1849 aufgelöst.</li><li>Die Reichsverfassungskampagne (Sachsen, Pfalz, Baden) wurde von preußischen Truppen niedergeschlagen, Rastatt fiel am 23. Juli 1849.</li></ul>
 <p><b>Ergebnis:</b> Die Revolution von 1848/49 scheiterte. Die Fürsten konnten ihre Macht weitgehend wiederherstellen. Die Forderungen nach nationaler Einheit und politischer Freiheit blieben zunächst unerfüllt.</p>`}
 ];
-function renderTasks(){$('#tasks').innerHTML=TASKS.map(t=>`<div class="task" id="t-${t.id}"><div class="hd"><span class="tag">${t.id}</span><span class="q">${t.q}</span><span class="done">${S.tasks[t.id]?'✅':'⬜'}</span></div>
+function renderTasks(){$('#tasks').innerHTML=TASKS.map(t=>`<div class="task" id="t-${t.id}"><div class="hd" role="button" tabindex="0" aria-expanded="false"><span class="tag">${t.id}</span><span class="q">${t.q}</span><span class="done">${S.tasks[t.id]?'✅':'⬜'}</span></div>
 <div class="bd"><textarea placeholder="Erst selbst antworten: Stichpunkte oder ganzer Text …" data-id="${t.id}">${(S.notes[t.id]||'').replace(/</g,'&lt;')}</textarea>
 <div class="row" style="margin-top:8px"><button class="small showsol">Lösung aufdecken</button><button class="ghost small mark">${S.tasks[t.id]?'Als offen markieren':'✓ Kann ich'}</button></div>
 <div class="sol">${t.s}<p class="add" style="margin-top:10px">Kursiv grau = Ergänzung zu deinen Lösungen.</p></div></div></div>`).join('');
  document.querySelectorAll('.task').forEach(el=>{const id=el.id.slice(2);
-  el.querySelector('.hd').onclick=()=>el.classList.toggle('open');
+  const hd=el.querySelector('.hd');hd.onclick=()=>{el.classList.toggle('open');hd.setAttribute('aria-expanded',el.classList.contains('open'));};
+  hd.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();hd.click();}};
   el.querySelector('.showsol').onclick=e=>{const s=el.querySelector('.sol');s.classList.toggle('show');e.target.textContent=s.classList.contains('show')?'Lösung verbergen':'Lösung aufdecken';};
   el.querySelector('.mark').onclick=()=>{S.tasks[id]=S.tasks[id]?0:1;if(!S.tasks[id])delete S.tasks[id];save();el.querySelector('.done').textContent=S.tasks[id]?'✅':'⬜';el.querySelector('.mark').textContent=S.tasks[id]?'Als offen markieren':'✓ Kann ich';if(S.tasks[id])toast(id+' erledigt!');};
   el.querySelector('textarea').oninput=e=>{S.notes[id]=e.target.value;save();};});}
@@ -580,25 +759,49 @@ const QZ=[
  ['Welche langfristige Wirkung hatte die Paulskirchenverfassung?',['Vorbild für Weimarer Verfassung und Grundgesetz','Sie galt bis 1918','Sie führte direkt zur Reichsgründung 1849','Sie hatte keinerlei Wirkung'],0,'Ihr Grundrechtekatalog wirkte in Weimar (1919) und im Grundgesetz (1949) nach.'],
  ['Was war die Reichsverfassungskampagne?',['Aufstände 1849 zur Durchsetzung der Verfassung','Wahlkampf zur Nationalversammlung','Kampagne Preußens gegen Österreich','Volksabstimmung über die Verfassung'],0,'Aufstände in Sachsen, Pfalz und Baden, von Preußen niedergeschlagen.']
 ];
-let qs=[],qi=0,qok=0;
-function qStart(){qs=shuffle(QZ).map(q=>{const o=shuffle(q[1].map((t,i)=>({t,c:i===q[2]})));return {q:q[0],o,e:q[3]};});qi=0;qok=0;qShow();}
-function qShow(){$('#qbest').textContent=S.best?`Dein bestes Ergebnis: ${S.best}/${QZ.length}`:`${QZ.length} Fragen. Nach jeder Antwort siehst du die Erklärung.`;
- if(qi>=qs.length){const p=Math.round(qok/qs.length*100);if(qok>S.best){S.best=qok;save();}
-  $('#qbox').innerHTML=`<div style="text-align:center"><div class="score">${qok}/${qs.length}</div><p>${p>=90?'🏆 Klausurreif!':p>=70?'💪 Sehr gut, noch ein paar Lücken.':p>=50?'📚 Ordentlich, geh nochmal die Aufgaben durch.':'🔁 Lies die Zeitleiste und Aufgaben nochmal, dann neuer Versuch.'}</p><button id="qAgain">Nochmal (neu gemischt)</button></div>`;
-  $('#qAgain').onclick=qStart;return;}
+let qs=[],qi=0,qok=0,qwrong=[],qmode=0,qanswered=false;
+function qMenu(){$('#qbest').textContent=S.best?`Dein bestes Ergebnis: ${S.best}/${QZ.length}`:`${QZ.length} Fragen insgesamt. Nach jeder Antwort siehst du die Erklärung.`;
+ $('#qbox').innerHTML=`<h3>Wie viel Zeit hast du?</h3><div class="row"><button id="qShort">Schnell: 10 Fragen</button><button class="ghost" id="qLong">Komplett: alle ${QZ.length}</button></div><p class="muted" style="font-size:.85rem;margin-bottom:0">Tastatur: <span class="kbd">1</span>–<span class="kbd">4</span> antworten, <span class="kbd">Enter</span> weiter. Nur das komplette Quiz zählt für den Rekord.</p>`;
+ $('#qShort').onclick=()=>qStart(shuffle(QZ).slice(0,10),1);$('#qLong').onclick=()=>qStart(QZ,0);}
+function qStart(src,mode){qmode=mode;qs=shuffle(src).map(q=>{const o=shuffle(q[1].map((t,i)=>({t,c:i===q[2]})));return {q:q[0],o,e:q[3],raw:q};});qi=0;qok=0;qwrong=[];qShow();}
+function qShow(){qanswered=false;
+ if(qi>=qs.length){const p=Math.round(qok/qs.length*100);if(qmode===0&&qok>S.best){S.best=qok;save();}
+  $('#qbest').textContent=S.best?`Dein bestes Ergebnis: ${S.best}/${QZ.length}`:'';
+  $('#qbox').innerHTML=`<div style="text-align:center"><div class="score tnum">${qok}/${qs.length}</div><p>${p>=90?'🏆 Klausurreif!':p>=70?'💪 Sehr gut, noch ein paar Lücken.':p>=50?'📚 Ordentlich, geh nochmal die Aufgaben durch.':'🔁 Lies die Zeitleiste und Aufgaben nochmal, dann neuer Versuch.'}</p></div>
+  ${qwrong.length?`<h3 style="margin-top:14px">Das solltest du dir nochmal ansehen</h3>${qwrong.map(w=>`<div class="rev"><b>${w.q}</b><small>Richtig: ${w.raw[1][w.raw[2]]}. ${w.e}</small></div>`).join('')}`:''}
+  <div class="row" style="justify-content:center;margin-top:12px">${qwrong.length?'<button id="qRetry">Nur Fehler wiederholen</button>':''}<button class="ghost" id="qAgain">Neues Quiz</button></div>`;
+  if($('#qRetry'))$('#qRetry').onclick=()=>qStart(qwrong.map(w=>w.raw),1);
+  $('#qAgain').onclick=qMenu;return;}
  const q=qs[qi];
- $('#qbox').innerHTML=`<div class="row" style="justify-content:space-between"><span class="muted">Frage ${qi+1}/${qs.length}</span><span class="muted">✓ ${qok}</span></div><div class="bar" style="margin:8px 0 14px"><i style="width:${qi/qs.length*100}%"></i></div><h3>${q.q}</h3>${q.o.map((o,i)=>`<button class="opt" data-i="${i}">${o.t}</button>`).join('')}<div class="expl" id="qe"></div><div class="row" style="margin-top:10px"><button id="qn" style="display:none">Weiter →</button></div>`;
- document.querySelectorAll('#qbox .opt').forEach(b=>b.onclick=()=>{const o=q.o[b.dataset.i];
+ $('#qbox').innerHTML=`<div class="row" style="justify-content:space-between"><span class="muted tnum">Frage ${qi+1}/${qs.length}</span><span class="muted tnum">✓ ${qok}</span></div><div class="bar" style="margin:8px 0 14px"><i style="width:${qi/qs.length*100}%"></i></div><h3>${q.q}</h3>${q.o.map((o,i)=>`<button class="opt" data-i="${i}"><span class="kbd" style="margin-right:8px">${i+1}</span>${o.t}</button>`).join('')}<div class="expl" id="qe"></div><div class="row" style="margin-top:10px"><button id="qn" hidden>Weiter →</button></div>`;
+ document.querySelectorAll('#qbox .opt').forEach(b=>b.onclick=()=>{if(qanswered)return;qanswered=true;const o=q.o[b.dataset.i];
   document.querySelectorAll('#qbox .opt').forEach((x,i)=>{x.disabled=true;if(q.o[i].c)x.classList.add('good');});
-  if(o.c)qok++;else b.classList.add('wrong');
-  $('#qe').style.display='block';$('#qe').innerHTML=(o.c?'✓ <b>Richtig.</b> ':'✗ <b>Leider falsch.</b> ')+q.e;$('#qn').style.display='';});
+  if(o.c)qok++;else{b.classList.add('wrong');qwrong.push(q);}
+  $('#qe').style.display='block';$('#qe').innerHTML=(o.c?'✓ <b>Richtig.</b> ':'✗ <b>Leider falsch.</b> ')+q.e;$('#qn').hidden=false;$('#qn').focus({preventScroll:true});});
  $('#qn').onclick=()=>{qi++;qShow();};}
-qStart();
+qMenu();
+
+/* ---------- rank reasons ---------- */
+const RK=['Keine Machtbasis','Uneinigkeit der Revolutionäre','Zu langes Beraten','Die nationale Frage','Ablehnung der Krone','Militärische Gegenrevolution','Soziale Spaltung'];
+let rk=Array.isArray(S.rank)&&S.rank.length===RK.length?S.rank.slice():RK.map((x,i)=>i);
+function rkRender(){const ul=$('#rank');ul.innerHTML='';rk.forEach((k,i)=>{const li=document.createElement('li');
+ li.innerHTML=`<span class="n">${i+1}</span><span class="tx">${RK[k]}</span><button class="ghost small" aria-label="nach oben" ${i==0?'disabled':''}>↑</button><button class="ghost small" aria-label="nach unten" ${i==rk.length-1?'disabled':''}>↓</button>`;
+ const [u,d]=li.querySelectorAll('button');u.onclick=()=>{[rk[i-1],rk[i]]=[rk[i],rk[i-1]];S.rank=rk.slice();save();rkRender();};d.onclick=()=>{[rk[i+1],rk[i]]=[rk[i],rk[i+1]];S.rank=rk.slice();save();rkRender();};ul.appendChild(li);});}
+rkRender();
+$('#rankNote').value=S.rankNote||'';$('#rankNote').oninput=e=>{S.rankNote=e.target.value;save();};
+$('#rankCmp').onclick=e=>{const s=$('#rankSol');s.classList.toggle('show');e.target.textContent=s.classList.contains('show')?'Musterurteil verbergen':'Mit Musterurteil vergleichen';};
+
+/* ---------- keyboard ---------- */
+document.addEventListener('keydown',e=>{const tg=e.target.tagName;if(tg==='TEXTAREA'||tg==='INPUT'||e.metaKey||e.ctrlKey||e.altKey)return;
+ if(VIEW==='karten'){if(e.key===' '){e.preventDefault();$('#flip').click();}else if(e.key==='ArrowRight')$('#fcKnown').click();else if(e.key==='ArrowLeft')$('#fcAgain').click();}
+ else if(VIEW==='quiz'){const n=parseInt(e.key,10);const o=document.querySelectorAll('#qbox .opt');if(n>=1&&n<=o.length&&!qanswered)o[n-1].click();else if(e.key==='Enter'&&$('#qn')&&!$('#qn').hidden){e.preventDefault();$('#qn').click();}}
+ else if(VIEW==='spiele'&&bl.on){if(e.key==='r'||e.key==='R')blAns(1);else if(e.key==='f'||e.key==='F')blAns(0);}});
 
 /* ---------- progress ---------- */
 function progress(){const t=Object.keys(S.tasks).length/10,c=Object.keys(S.cards).length/CARDS.length,q=S.best/QZ.length;
  const p=Math.round((t*.45+c*.25+q*.30)*100);$('#pct').textContent=p+' %';$('#pbar').style.width=p+'%';}
-$('#reset').onclick=()=>{S={tasks:{},cards:{},best:0,notes:{}};save();renderTasks();buildDeck();qStart();toast('Zurückgesetzt');};
+$('#reset').onclick=e=>{const b=e.target;if(!b.dataset.armed){b.dataset.armed=1;b.textContent='Wirklich alles löschen? Nochmal tippen';b._t=setTimeout(()=>{delete b.dataset.armed;b.textContent='Fortschritt zurücksetzen';},3000);return;}
+ clearTimeout(b._t);delete b.dataset.armed;b.textContent='Fortschritt zurücksetzen';S={tasks:{},cards:{},best:0,notes:{},blitz:0,rank:null,rankNote:''};save();renderTasks();buildDeck();qMenu();blIdle();rk=RK.map((x,i)=>i);rkRender();$('#rankNote').value='';toast('Zurückgesetzt');};
 progress();route();
 </script>
 </body>

@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revolution 1848/49 – Lernzentrale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f2ea; --card:#fffdf8; --ink:#1d1a16; --muted:#6b6358; --line:#e3dbcd;
+  --black:#1d1a16; --red:#b3261e; --gold:#d9a400; --goldsoft:#fbf1cf;
+  --ok:#2e7d4f; --oksoft:#e3f3e9; --bad:#b3261e; --badsoft:#fbe5e3;
+  --r:14px;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#16140f;--card:#211e18;--ink:#f1ebdf;--muted:#a79f92;--line:#383228;--goldsoft:#3a2f0e;--oksoft:#16301f;--badsoft:#3a1714;--black:#f1ebdf}
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;padding-bottom:84px}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;line-height:1.15;margin:0 0 .5em}
+h2{font-size:1.6rem}
+h3{font-size:1.15rem}
+.flag{height:6px;background:linear-gradient(90deg,#1d1a16 0 33.3%,var(--red) 33.3% 66.6%,var(--gold) 66.6%)}
+header.hero{padding:28px 18px 18px;max-width:900px;margin:auto}
+.hero h1{font-size:2.2rem}
+.hero p{color:var(--muted);margin:.3em 0 1em}
+.wrap{max-width:900px;margin:auto;padding:0 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin:14px 0}
+.muted{color:var(--muted)}
+.pill{display:inline-block;font-size:.75rem;font-weight:600;padding:3px 9px;border-radius:99px;background:var(--goldsoft);color:var(--ink);margin-right:6px}
+button{font:inherit;cursor:pointer;border:none;border-radius:10px;padding:10px 14px;background:var(--ink);color:var(--bg);font-weight:600}
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+button.small{padding:6px 10px;font-size:.85rem}
+button:disabled{opacity:.4;cursor:default}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+/* nav */
+nav.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;overflow-x:auto;z-index:20;padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+nav.tabs a{flex:1 0 auto;text-align:center;text-decoration:none;color:var(--muted);font-size:.72rem;font-weight:600;padding:6px 10px;border-radius:10px;white-space:nowrap}
+nav.tabs a span{display:block;font-size:1.25rem;line-height:1.2}
+nav.tabs a.on{color:var(--ink);background:var(--goldsoft)}
+.view{display:none}
+.view.on{display:block;animation:fade .25s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+/* home grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.tile{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;transition:transform .15s}
+.tile:hover{transform:translateY(-2px)}
+.tile b{display:block;font-family:Fraunces,serif;font-size:1.1rem;margin:4px 0}
+.tile .ico{font-size:1.6rem}
+.bar{height:10px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--red),var(--gold));width:0;transition:width .4s}
+/* timeline */
+.tl{position:relative;margin-left:10px;padding-left:22px;border-left:3px solid var(--line)}
+.ev{position:relative;margin:0 0 14px}
+.ev::before{content:"";position:absolute;left:-31px;top:6px;width:15px;height:15px;border-radius:50%;background:var(--card);border:3px solid var(--muted)}
+.ev.key::before{border-color:var(--red);background:var(--gold)}
+.ev .d{font-weight:700;font-size:.85rem;color:var(--red)}
+.ev .t{font-weight:600}
+.ev details{margin-top:4px}
+.ev summary{cursor:pointer;color:var(--muted);font-size:.9rem}
+.phase{font-family:Fraunces,serif;font-weight:800;margin:22px 0 10px -22px;padding-left:22px;font-size:1.05rem}
+/* flashcards */
+.flip{perspective:1000px;height:260px;margin:10px 0}
+.flip .in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d;cursor:pointer}
+.flip.f .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);border:1px solid var(--line);background:var(--card);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:22px;text-align:center}
+.face.back{transform:rotateY(180deg);background:var(--goldsoft)}
+.face .big{font-family:Fraunces,serif;font-size:1.6rem;font-weight:800}
+.face .hint{position:absolute;bottom:10px;font-size:.75rem;color:var(--muted)}
+/* order game */
+.olist{list-style:none;padding:0;margin:0}
+.olist li{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px;margin:6px 0}
+.olist li .n{font-weight:800;width:22px;color:var(--muted)}
+.olist li .tx{flex:1}
+.olist li.good{background:var(--oksoft);border-color:var(--ok)}
+.olist li.wrong{background:var(--badsoft);border-color:var(--bad)}
+.olist li .dt{font-size:.8rem;font-weight:700;color:var(--ok)}
+/* sort game */
+.chips{display:flex;flex-wrap:wrap;gap:8px;min-height:40px}
+.chip{background:var(--card);border:1px solid var(--line);padding:8px 12px;border-radius:99px;cursor:pointer;font-size:.9rem;user-select:none}
+.chip.sel{outline:3px solid var(--gold)}
+.chip.good{background:var(--oksoft);border-color:var(--ok)}
+.chip.wrong{background:var(--badsoft);border-color:var(--bad)}
+.buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:12px}
+.bucket{border:2px dashed var(--line);border-radius:var(--r);padding:12px;min-height:110px;cursor:pointer}
+.bucket h4{margin:0 0 8px;font-size:.95rem}
+.bucket.hot{border-color:var(--gold);background:var(--goldsoft)}
+/* accordion tasks */
+.task{border:1px solid var(--line);border-radius:var(--r);background:var(--card);margin:12px 0;overflow:hidden}
+.task > .hd{padding:14px 16px;cursor:pointer;display:flex;gap:10px;align-items:flex-start}
+.task > .hd .tag{background:var(--ink);color:var(--bg);font-weight:800;border-radius:8px;padding:2px 8px;font-size:.85rem;flex:none}
+.task > .hd .q{flex:1}
+.task .bd{display:none;padding:0 16px 16px}
+.task.open .bd{display:block}
+.task .done{font-size:1.1rem}
+.sol{display:none;border-left:4px solid var(--gold);background:var(--goldsoft);padding:12px 14px;border-radius:0 10px 10px 0;margin-top:10px}
+.sol.show{display:block}
+.sol ul{margin:.3em 0;padding-left:1.2em}
+textarea{width:100%;min-height:110px;font:inherit;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--bg);color:var(--ink)}
+table{width:100%;border-collapse:collapse;font-size:.93rem}
+td,th{border-bottom:1px solid var(--line);padding:7px 6px;text-align:left;vertical-align:top}
+th{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.add{font-size:.85rem;color:var(--muted);font-style:italic}
+/* quiz */
+.opt{display:block;width:100%;text-align:left;background:var(--card);color:var(--ink);border:1px solid var(--line);margin:8px 0;font-weight:500}
+.opt.good{background:var(--oksoft);border-color:var(--ok)}
+.opt.wrong{background:var(--badsoft);border-color:var(--bad)}
+.expl{margin-top:8px;padding:10px 12px;border-radius:10px;background:var(--goldsoft);display:none}
+.score{font-family:Fraunces,serif;font-size:3rem;font-weight:800}
+/* gaps */
+.gap{display:inline-block;min-width:90px;border:none;border-bottom:2px solid var(--muted);background:transparent;font:inherit;color:var(--ink);padding:0 4px;margin:0 2px}
+.gap.good{border-color:var(--ok);color:var(--ok);font-weight:600}
+.gap.wrong{border-color:var(--bad);color:var(--bad)}
+/* compare */
+.cols3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.camp{border-radius:var(--r);padding:14px;border:1px solid var(--line);background:var(--card)}
+.camp h3{margin-bottom:6px}
+.camp ul{margin:0;padding-left:1.1em}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:99px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:30}
+.toast.on{opacity:1}
+.why{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.why .card{margin:0}
+</style>
+</head>
+<body>
+<div class="flag"></div>
+
+<!-- ========== HOME ========== -->
+<section class="view" id="v-start">
+<header class="hero">
+  <span class="pill">Klausurvorbereitung Geschichte</span>
+  <h1>Die Revolution 1848/49 und ihr Scheitern</h1>
+  <p>Alles vom Arbeitsblatt (A1–A10) zum Lesen, Üben und Abfragen. Unten in der Leiste wechselst du zwischen den Bereichen.</p>
+  <div class="card">
+    <div class="row" style="justify-content:space-between"><b>Dein Lernfortschritt</b><span id="pct">0 %</span></div>
+    <div class="bar" style="margin-top:8px"><i id="pbar"></i></div>
+    <p class="muted" style="font-size:.85rem;margin:.6em 0 0">Zählt erledigte Aufgaben A1–A10, gelernte Karteikarten und dein bestes Quiz-Ergebnis. Wird auf diesem Gerät gespeichert.</p>
+  </div>
+</header>
+<div class="wrap">
+  <div class="card" style="border-left:5px solid var(--red)">
+    <h3>Die Revolution in 30 Sekunden</h3>
+    <p style="margin:0">Angestoßen von der <b>Februarrevolution in Paris</b> erheben sich im <b>März 1848</b> Menschen in Wien und Berlin. <b>Metternich</b> stürzt, <b>Friedrich Wilhelm IV.</b> gibt nach. Im Mai tritt die <b>Nationalversammlung in der Paulskirche</b> zusammen und erarbeitet eine Verfassung mit Grundrechten und einem Erbkaiser. Doch das Parlament hat <b>keine eigene Macht</b> (Armee, Verwaltung). Als der preußische König im <b>April 1849 die Kaiserkrone ablehnt</b>, ist das Projekt gescheitert. Bis Juli 1849 schlagen die Fürsten die letzten Aufstände nieder.</p>
+  </div>
+  <h3 style="margin-top:20px">Lernpfad</h3>
+  <div class="grid">
+    <a class="tile" href="#zeitleiste"><span class="ico">🗓️</span><b>1 · Zeitleiste</b><span class="muted">1815 bis 1849, Ereignis für Ereignis</span></a>
+    <a class="tile" href="#lager"><span class="ico">⚖️</span><b>2 · Politische Lager</b><span class="muted">Liberale, Demokraten, Konservative</span></a>
+    <a class="tile" href="#karten"><span class="ico">🃏</span><b>3 · Karteikarten</b><span class="muted">Begriffe zum Umdrehen</span></a>
+    <a class="tile" href="#spiele"><span class="ico">🧩</span><b>4 · Übungsspiele</b><span class="muted">Sortieren, zuordnen, Lückentext</span></a>
+    <a class="tile" href="#aufgaben"><span class="ico">📝</span><b>5 · Aufgaben A1–A10</b><span class="muted">Selbst antworten, Lösung aufdecken</span></a>
+    <a class="tile" href="#quiz"><span class="ico">🎯</span><b>6 · Abschlussquiz</b><span class="muted">25 Fragen, zufällige Reihenfolge</span></a>
+    <a class="tile" href="#scheitern"><span class="ico">💥</span><b>Warum scheiterte sie?</b><span class="muted">Ursachen und Folgen auf einen Blick</span></a>
+  </div>
+  <div class="card">
+    <h3>Operatoren: was die Aufgaben verlangen</h3>
+    <table>
+      <tr><th>Operator</th><th>Was du tun musst</th></tr>
+      <tr><td><b>Nennen</b></td><td>Aufzählen, ohne zu erklären (A3)</td></tr>
+      <tr><td><b>Ordnen / Zuordnen</b></td><td>In eine Reihenfolge oder Kategorie bringen (A1, A4)</td></tr>
+      <tr><td><b>Erklären</b></td><td>Begriff mit eigenen Worten verständlich machen (A2)</td></tr>
+      <tr><td><b>Beschreiben</b></td><td>Ablauf sachlich und geordnet wiedergeben, noch ohne Bewertung (A5, A9)</td></tr>
+      <tr><td><b>Erläutern</b></td><td>Beschreiben und mit Gründen, Zusammenhängen und Beispielen verdeutlichen (A5–A10)</td></tr>
+      <tr><td><b>Stellung nehmen</b></td><td>Eigenes, begründetes Urteil mit Pro und Contra (A6)</td></tr>
+    </table>
+  </div>
+  <div class="row" style="margin:20px 0 30px"><button class="ghost small" id="reset">Fortschritt zurücksetzen</button></div>
+</div>
+</section>
+
+<!-- ========== ZEITLEISTE ========== -->
+<section class="view" id="v-zeitleiste"><div class="wrap">
+  <header class="hero" style="padding-left:0"><span class="pill">Thema 1</span><h2>Zeitleiste: Vorgeschichte, Verlauf, Scheitern</h2><p class="muted">Tippe auf „Mehr“ für Hintergründe. Rot umrandete Punkte sind besonders klausurrelevant (A1).</p></header>
+  <div class="tl" id="tl"></div>
+  <div class="card"><b>Merksatz:</b> Februar (Paris) → März (Wien, Berlin) → März/April (Vorparlament) → Mai (Paulskirche) → Dezember (Grundrechte) → März 1849 (Verfassung) → April 1849 (Krone abgelehnt) → Juli 1849 (Rastatt, Ende).</div>
+</div></section>
+
+<!-- ========== LAGER ========== -->
+<section class="view" id="v-lager"><div class="wrap">
+  <header class="hero" style="padding-left:0"><span class="pill">Thema 2 · A4</span><h2>Die politischen Lager</h2><p class="muted">Wer wollte was? Das Grundmuster: Wie viel Macht soll das Volk haben, und wie viel der Monarch?</p></header>
+  <div class="cols3">
+    <div class="camp" style="border-top:5px solid var(--gold)"><h3>Liberale</h3><p class="muted" style="margin:.2em 0 .6em">„Reform mit dem König“</p><ul>
+      <li><b>Konstitutionelle Monarchie</b>: König bleibt, aber an eine Verfassung gebunden</li>
+      <li>Grundrechte (Presse-, Meinungs-, Versammlungsfreiheit)</li>
+      <li>Parlamentarische Mitbestimmung</li>
+      <li>Oft für ein eingeschränktes Wahlrecht nach Besitz/Bildung</li>
+      <li>Träger: Besitz- und Bildungsbürgertum</li></ul></div>
+    <div class="camp" style="border-top:5px solid var(--red)"><h3>Demokraten</h3><p class="muted" style="margin:.2em 0 .6em">„Das Volk regiert“</p><ul>
+      <li><b>Demokratische Republik</b>, ohne Monarch</li>
+      <li><b>Volkssouveränität</b>: alle Macht geht vom Volk aus</li>
+      <li>Allgemeines, gleiches Wahlrecht</li>
+      <li>Soziale Verbesserungen für Arbeiter und Bauern</li>
+      <li>Teilweise bereit zu revolutionärer Gewalt (z. B. Heckerzug in Baden, April 1848)</li></ul></div>
+    <div class="camp" style="border-top:5px solid var(--black)"><h3>Konservative</h3><p class="muted" style="margin:.2em 0 .6em">„Alles soll bleiben“</p><ul>
+      <li><b>Erhalt der Monarchie</b> und der traditionellen Ordnung</li>
+      <li>Herrschaft von <b>Gottes Gnaden</b>, nicht vom Volk</li>
+      <li>Bewahrung der Vorrechte von Adel, Kirche, Militär</li>
+      <li>Gegen Volkssouveränität und Republik</li>
+      <li>Träger: Adel, Fürsten, Militär, Teile der Kirche</li></ul></div>
+  </div>
+  <div class="card">
+    <h3>Die Fraktionen in der Paulskirche</h3>
+    <p class="muted" style="margin-top:0">Fraktionen benannten sich nach den Gasthäusern, in denen sie tagten.</p>
+    <table>
+      <tr><th>Richtung</th><th>Beispiel</th><th>Ziel</th></tr>
+      <tr><td>Linke (Demokraten)</td><td>Donnersberg, Deutscher Hof</td><td>Republik, Volkssouveränität</td></tr>
+      <tr><td>Linkes Zentrum</td><td>Württemberger Hof, Westendhall</td><td>Parlamentarische Monarchie</td></tr>
+      <tr><td>Rechtes Zentrum (größte Gruppe)</td><td>Casino</td><td>Konstitutionelle Monarchie (Liberale)</td></tr>
+      <tr><td>Rechte (Konservative)</td><td>Café Milani</td><td>Starke Fürstenmacht</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h3>Großdeutsch oder kleindeutsch?</h3>
+    <div class="cols3">
+      <div><b>Großdeutsche Lösung</b><br>Nationalstaat <b>mit Österreich</b> (deutschsprachige Gebiete), unter habsburgischem Einfluss. Problem: Österreich war ein Vielvölkerstaat und wollte nicht geteilt werden.</div>
+      <div><b>Kleindeutsche Lösung</b><br>Nationalstaat <b>ohne Österreich</b>, unter Führung <b>Preußens</b>. Setzte sich in der Paulskirche durch, deshalb sollte der preußische König Kaiser werden.</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ========== KARTEIKARTEN ========== -->
+<section class="view" id="v-karten"><div class="wrap">
+  <header class="hero" style="padding-left:0"><span class="pill">Thema 3 · A2</span><h2>Karteikarten</h2><p class="muted">Karte antippen zum Umdrehen. Dann ehrlich einschätzen: gewusst oder nochmal?</p></header>
+  <div class="row"><span id="fcInfo" class="muted"></span></div>
+  <div class="flip" id="flip"><div class="in"><div class="face front"><div class="big" id="fcFront"></div><div class="hint">antippen zum Umdrehen</div></div><div class="face back"><div id="fcBack"></div></div></div></div>
+  <div class="row" style="justify-content:center">
+    <button class="ghost" id="fcAgain">↺ Nochmal</button>
+    <button id="fcKnown">✓ Gewusst</button>
+  </div>
+  <div class="row" style="justify-content:center;margin-top:10px">
+    <button class="ghost small" id="fcShuffle">Mischen</button>
+    <button class="ghost small" id="fcResetCards">Alle Karten zurücksetzen</button>
+  </div>
+  <div class="card" style="margin-top:20px"><h3>Alle Begriffe auf einen Blick</h3><table id="glossary"></table></div>
+</div></section>
+
+<!-- ========== SPIELE ========== -->
+<section class="view" id="v-spiele"><div class="wrap">
+  <header class="hero" style="padding-left:0"><span class="pill">Thema 4</span><h2>Übungsspiele</h2></header>
+
+  <div class="card" id="g1">
+    <h3>🧩 Spiel 1: Chronologie (A1)</h3>
+    <p class="muted">Bringe die Ereignisse mit ↑ ↓ in die richtige Reihenfolge, dann prüfen.</p>
+    <ul class="olist" id="olist"></ul>
+    <div class="row" style="margin-top:10px"><button id="oCheck">Prüfen</button><button class="ghost" id="oShuffle">Neu mischen</button><span id="oRes" style="font-weight:700"></span></div>
+  </div>
+
+  <div class="card" id="g2">
+    <h3>🧩 Spiel 2: Märzforderungen zuordnen (A3)</h3>
+    <p class="muted">Tippe eine Forderung an, dann den passenden Bereich.</p>
+    <div class="chips" id="s1pool"></div>
+    <div class="buckets" id="s1b"></div>
+    <div class="row" style="margin-top:10px"><button id="s1check">Prüfen</button><button class="ghost" id="s1reset">Neu starten</button><span id="s1res" style="font-weight:700"></span></div>
+  </div>
+
+  <div class="card" id="g3">
+    <h3>🧩 Spiel 3: Welches Lager? (A4)</h3>
+    <p class="muted">Tippe eine Forderung an, dann das Lager.</p>
+    <div class="chips" id="s2pool"></div>
+    <div class="buckets" id="s2b"></div>
+    <div class="row" style="margin-top:10px"><button id="s2check">Prüfen</button><button class="ghost" id="s2reset">Neu starten</button><span id="s2res" style="font-weight:700"></span></div>
+  </div>
+
+  <div class="card" id="g4">
+    <h3>🧩 Spiel 4: Lückentext Paulskirchenverfassung (A7)</h3>
+    <p class="muted">Groß-/Kleinschreibung egal. Bei Fehlern zeigt „Lösung“ die Antworten.</p>
+    <div id="gaptext" style="line-height:2.3"></div>
+    <div class="row" style="margin-top:10px"><button id="gCheck">Prüfen</button><button class="ghost" id="gShow">Lösung</button><span id="gRes" style="font-weight:700"></span></div>
+  </div>
+
+  <div class="card" id="g5">
+    <h3>🧩 Spiel 5: Wer oder was bin ich?</h3>
+    <p class="muted">Rate anhand der Hinweise. Jeder Hinweis macht es leichter.</p>
+    <div id="who"></div>
+  </div>
+</div></section>
+
+<!-- ========== AUFGABEN ========== -->
+<section class="view" id="v-aufgaben"><div class="wrap">
+  <header class="hero" style="padding-left:0"><span class="pill">Thema 5</span><h2>Aufgaben A1–A10 mit Lösungen</h2><p class="muted">So lernst du am meisten: Aufgabe öffnen, erst selbst antworten (Notizfeld), dann Lösung aufdecken und vergleichen, dann als erledigt markieren.</p></header>
+  <div id="tasks"></div>
+</div></section>
+
+<!-- ========== SCHEITERN ========== -->
+<section class="view" id="v-scheitern"><div class="wrap">
+  <header class="hero" style="padding-left:0"><span class="pill">Kernfrage</span><h2>Warum scheiterte die Revolution?</h2><p class="muted">Diese Gründe solltest du in einer Erörterung verknüpfen können.</p></header>
+  <div class="why">
+    <div class="card"><h3>🏛️ Keine Machtbasis</h3>Die Nationalversammlung hatte keine Armee, Verwaltung oder Polizei und war auf die Fürsten angewiesen (A8). Beispiel: Im Waffenstillstand von Malmö (Aug. 1848) handelte Preußen über ihren Kopf hinweg, und sie musste zustimmen.</div>
+    <div class="card"><h3>🔀 Uneinigkeit der Revolutionäre</h3>Liberale wollten eine konstitutionelle Monarchie, Demokraten eine Republik. Das Bürgertum fürchtete zunehmend radikale Unruhen und suchte die Nähe zu den Fürsten.</div>
+    <div class="card"><h3>⏳ Zu langes Beraten</h3>Fast ein Jahr Verfassungsdebatte. In der Zeit erholten sich die Fürsten und sammelten ihre Truppen (Wien Okt. 1848, Berlin Nov. 1848).</div>
+    <div class="card"><h3>🗺️ Die nationale Frage</h3>Streit um groß- oder kleindeutsche Lösung. Österreich wollte sein Vielvölkerreich nicht teilen, also blieb nur die kleindeutsche Lösung ohne Österreich.</div>
+    <div class="card"><h3>👑 Ablehnung der Krone</h3>Friedrich Wilhelm IV. lehnte am 3. April 1849 ab (Gottesgnadentum). Ohne Kaiser war die Verfassung nicht umsetzbar (A10).</div>
+    <div class="card"><h3>⚔️ Militärische Gegenrevolution</h3>Preußische Truppen schlugen die Reichsverfassungskampagne (Sachsen, Pfalz, Baden) nieder. Ende: Rastatt, 23. Juli 1849.</div>
+    <div class="card"><h3>👷 Soziale Spaltung</h3>Arbeiter und Bauern waren im Parlament kaum vertreten. Bauern gaben sich nach Abschaffung feudaler Lasten oft zufrieden, die Revolution verlor Rückhalt.</div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <h3>Folgen: Gescheitert, aber nicht folgenlos</h3>
+    <table>
+      <tr><th>Kurzfristig</th><th>Langfristig</th></tr>
+      <tr><td>Fürsten stellen ihre Macht wieder her („Reaktion“), Deutscher Bund wird 1850/51 erneuert</td><td>Paulskirchenverfassung wird Vorbild für die Weimarer Verfassung (1919) und das Grundgesetz (1949)</td></tr>
+      <tr><td>Verfolgung und Hinrichtung von Revolutionären, Zensur</td><td>Grundrechtekatalog und Schwarz-Rot-Gold als Symbole der Demokratie</td></tr>
+      <tr><td>Massenauswanderung, vor allem in die USA („Forty-Eighters“)</td><td>Nationale Einheit kommt 1871, aber „von oben“ durch Bismarck, kleindeutsch</td></tr>
+      <tr><td>Preußen erhält eine oktroyierte Verfassung mit Dreiklassenwahlrecht (1849/50)</td><td>Entstehung von Parteien und politischer Öffentlichkeit</td></tr>
+    </table>
+  </div>
+  <div class="card" style="border-left:5px solid var(--gold)"><b>Klausur-Tipp:</b> Schreib nicht nur Gründe auf, sondern gewichte sie. Ein häufiges Urteil: Der <b>entscheidende</b> Grund war die fehlende Machtbasis. Die Ablehnung der Krone war nur der <b>Auslöser</b> des endgültigen Scheiterns, weil sie zeigte, dass das Parlament ohne die Fürsten nichts durchsetzen konnte.</div>
+</div></section>
+
+<!-- ========== QUIZ ========== -->
+<section class="view" id="v-quiz"><div class="wrap">
+  <header class="hero" style="padding-left:0"><span class="pill">Thema 6</span><h2>Abschlussquiz</h2><p class="muted" id="qbest"></p></header>
+  <div class="card" id="qbox"></div>
+</div></section>
+
+<nav class="tabs" id="nav">
+  <a href="#start"><span>🏠</span>Start</a>
+  <a href="#zeitleiste"><span>🗓️</span>Zeitleiste</a>
+  <a href="#lager"><span>⚖️</span>Lager</a>
+  <a href="#karten"><span>🃏</span>Karten</a>
+  <a href="#spiele"><span>🧩</span>Spiele</a>
+  <a href="#aufgaben"><span>📝</span>Aufgaben</a>
+  <a href="#scheitern"><span>💥</span>Scheitern</a>
+  <a href="#quiz"><span>🎯</span>Quiz</a>
+</nav>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- storage ---------- */
+const KEY='rev1848';
+let S={tasks:{},cards:{},best:0,notes:{}};
+try{const s=JSON.parse(localStorage.getItem(KEY));if(s)S=Object.assign(S,s);}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} progress();}
+const $=s=>document.querySelector(s);
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),1600);}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+/* ---------- routing ---------- */
+const views=['start','zeitleiste','lager','karten','spiele','aufgaben','scheitern','quiz'];
+function route(){let h=location.hash.slice(1);if(!views.includes(h))h='start';
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+h));
+  document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+h));
+  window.scrollTo(0,0);}
+window.addEventListener('hashchange',route);
+
+/* ---------- timeline ---------- */
+const TL=[
+ {p:'Vorgeschichte'},
+ {d:'1814/15',t:'Wiener Kongress',x:'Neuordnung Europas nach Napoleon unter Führung des österreichischen Staatskanzlers Metternich. Statt eines Nationalstaats entsteht der Deutsche Bund (39 Einzelstaaten). Prinzipien: Restauration, Legitimität, Solidarität der Fürsten.'},
+ {d:'1817',t:'Wartburgfest',x:'Studenten (Burschenschaften) fordern nationale Einheit und Freiheit. Farben Schwarz-Rot-Gold.'},
+ {d:'1819',t:'Karlsbader Beschlüsse',x:'Metternichs Antwort: Zensur, Überwachung der Universitäten, Verbot der Burschenschaften, Verfolgung von „Demagogen“.'},
+ {d:'1830',t:'Julirevolution in Frankreich',x:'Sturz der Bourbonen in Paris. Unruhen und erste Verfassungen auch in einigen deutschen Staaten.'},
+ {d:'27. Mai 1832',t:'Hambacher Fest',key:1,x:'Startpunkt der Zeitleiste auf deinem Arbeitsblatt. Rund 20.000–30.000 Menschen fordern auf dem Hambacher Schloss (Pfalz) nationale Einheit, Freiheit und Volkssouveränität. Schwarz-Rot-Gold wird zum Symbol. Folge: Der Deutsche Bund verschärft die Unterdrückung.'},
+ {d:'1837',t:'Göttinger Sieben',x:'Sieben Professoren protestieren gegen die Aufhebung der Verfassung im Königreich Hannover und werden entlassen. Zeigt: Bildungsbürger als Träger der liberalen Bewegung.'},
+ {d:'1844',t:'Weberaufstand in Schlesien',x:'Hungernde Weber erheben sich, preußisches Militär schlägt den Aufstand nieder. Symbol für die „soziale Frage“ (Pauperismus).'},
+ {d:'1845–47',t:'Missernten und Wirtschaftskrise',x:'Kartoffelfäule, Hungersnöte, steigende Preise, Arbeitslosigkeit. Die soziale Not verschärft die Unzufriedenheit.'},
+ {p:'Ausbruch 1848'},
+ {d:'Februar 1848',t:'Februarrevolution in Paris',key:1,x:'König Louis-Philippe wird gestürzt, Frankreich wird Republik. Funke für ganz Europa.'},
+ {d:'Ende Februar / März 1848',t:'Märzforderungen in Baden und anderen Staaten',x:'Volksversammlungen fordern Presse-, Versammlungsfreiheit, Schwurgerichte, Volksbewaffnung und ein deutsches Parlament. Viele Fürsten berufen liberale „Märzministerien“.'},
+ {d:'13. März 1848',t:'Rücktritt Metternichs in Wien',key:1,x:'Nach Aufständen in Wien tritt der Symbolmann der Restauration zurück und flieht nach England.'},
+ {d:'18./19. März 1848',t:'Barrikadenkämpfe in Berlin',key:1,x:'Schüsse des Militärs auf eine Menschenmenge vor dem Schloss lösen Barrikadenkämpfe aus, Hunderte Tote („Märzgefallene“). Friedrich Wilhelm IV. zieht die Truppen ab.'},
+ {d:'21. März 1848',t:'Umritt des Königs',x:'Friedrich Wilhelm IV. reitet mit schwarz-rot-goldener Armbinde durch Berlin: „Preußen geht fortan in Deutschland auf.“'},
+ {d:'31. März – 3. April 1848',t:'Vorparlament in Frankfurt',x:'Etwa 500 Männer bereiten die Wahlen zur Nationalversammlung vor. Demokraten scheitern mit der Forderung, sich zum dauerhaften Revolutionsparlament zu erklären.'},
+ {d:'April 1848',t:'Heckerzug in Baden',x:'Radikale Demokraten um Friedrich Hecker versuchen, eine Republik auszurufen. Der Aufstand wird schnell niedergeschlagen.'},
+ {p:'Paulskirche'},
+ {d:'18. Mai 1848',t:'Zusammentritt der Nationalversammlung',key:1,x:'Die gewählte Nationalversammlung tritt in der Frankfurter Paulskirche zusammen. Präsident: Heinrich von Gagern.'},
+ {d:'Juni 1848',t:'Provisorische Zentralgewalt',x:'Erzherzog Johann von Österreich wird Reichsverweser. Er hat aber keine eigenen Truppen und keine Verwaltung.'},
+ {d:'August/September 1848',t:'Waffenstillstand von Malmö',x:'Preußen beendet den Krieg gegen Dänemark um Schleswig-Holstein, ohne die Nationalversammlung zu fragen. Sie muss zustimmen. Unruhen in Frankfurt werden mit Bundestruppen niedergeschlagen. Zeigt deutlich die fehlende Machtbasis (A8).'},
+ {d:'Oktober/November 1848',t:'Gegenrevolution in Wien und Berlin',x:'Wien wird militärisch erobert, der Abgeordnete Robert Blum wird am 9. November hingerichtet. In Berlin marschiert General Wrangel ein, die preußische Nationalversammlung wird aufgelöst.'},
+ {d:'5. Dezember 1848',t:'Oktroyierte Verfassung in Preußen',x:'Der König erlässt („oktroyiert“) von oben eine Verfassung, ohne Parlament.'},
+ {d:'27. Dezember 1848',t:'Grundrechte des deutschen Volkes',x:'Die Nationalversammlung verkündet den Grundrechtekatalog vorab als Gesetz.'},
+ {p:'Scheitern 1849'},
+ {d:'28. März 1849',t:'Verabschiedung der Reichsverfassung',key:1,x:'Die Paulskirchenverfassung wird beschlossen. Am selben Tag wird Friedrich Wilhelm IV. zum erblichen „Kaiser der Deutschen“ gewählt.'},
+ {d:'3. April 1849',t:'Ablehnung der Kaiserkrone',key:1,x:'Der König lehnt gegenüber der Kaiserdeputation ab (endgültig am 28. April). Er will keine Krone „aus der Gosse“ von einem Parlament. Wendepunkt zum Scheitern.'},
+ {d:'April/Mai 1849',t:'Rückruf der Abgeordneten',x:'Österreich und Preußen rufen ihre Abgeordneten ab. Die Nationalversammlung schrumpft.'},
+ {d:'Mai–Juli 1849',t:'Reichsverfassungskampagne',x:'Aufstände in Sachsen (Dresden), der Pfalz und Baden für die Durchsetzung der Verfassung. Sie werden von preußischen Truppen niedergeschlagen.'},
+ {d:'18. Juni 1849',t:'Rumpfparlament in Stuttgart aufgelöst',x:'Die verbliebenen, meist linken Abgeordneten waren nach Stuttgart ausgewichen. Württembergisches Militär löst sie auf.'},
+ {d:'23. Juli 1849',t:'Kapitulation der Festung Rastatt',key:1,x:'Letzte Bastion der Revolutionäre in Baden fällt. Endgültiges Ende der Revolution. Standgerichte, Hinrichtungen, Auswanderungswelle.'}
+];
+(function(){let h='';TL.forEach(e=>{if(e.p){h+=`<div class="phase">${e.p}</div>`;return;}
+ h+=`<div class="ev ${e.key?'key':''}"><div class="d">${e.d}</div><div class="t">${e.t}</div><details><summary>Mehr</summary><div>${e.x}</div></details></div>`;});
+ $('#tl').innerHTML=h;})();
+
+/* ---------- flashcards ---------- */
+const CARDS=[
+ ['Märzforderungen','Forderungen der Revolutionäre im März 1848 nach <b>Freiheit</b> (Presse, Versammlung), <b>politischer Mitbestimmung</b>, <b>nationaler Einheit</b> und <b>sozialen Verbesserungen</b>.'],
+ ['Vorparlament','Versammlung in Frankfurt (31. März – 3. April 1848), die die <b>Wahl und Einberufung der Nationalversammlung vorbereitete</b>.'],
+ ['Großdeutsche Lösung','Deutscher Nationalstaat <b>einschließlich Österreichs</b> (der deutschsprachigen Gebiete) unter habsburgischem Einfluss.'],
+ ['Kleindeutsche Lösung','Deutscher Nationalstaat <b>ohne Österreich</b> unter Führung <b>Preußens</b>.'],
+ ['Erbkaisertum','Die Kaiserwürde wird <b>innerhalb einer Familie vererbt</b>, statt durch Wahl neu vergeben zu werden.'],
+ ['Paulskirchenverfassung','Am <b>28. März 1849</b> verabschiedete Verfassung für einen deutschen Nationalstaat mit <b>Grundrechten, Parlament und erblichem Kaiser</b>.'],
+ ['Nationalversammlung','Erstes gesamtdeutsches gewähltes Parlament, tagte ab <b>18. Mai 1848</b> in der Frankfurter Paulskirche.'],
+ ['Professorenparlament','Spottname für die Nationalversammlung, weil viele <b>Professoren, Juristen, Beamte</b> darin saßen. Arbeiter und Bauern fehlten fast ganz.'],
+ ['Konstitutionelle Monarchie','Monarchie, in der die Macht des Königs durch eine <b>Verfassung begrenzt</b> ist. Ziel der Liberalen.'],
+ ['Volkssouveränität','Alle Staatsgewalt geht <b>vom Volk</b> aus. Zentrale Forderung der Demokraten.'],
+ ['Gottesgnadentum','Herrschaft ist <b>von Gott verliehen</b>, nicht vom Volk. Grund, warum Friedrich Wilhelm IV. die Krone ablehnte.'],
+ ['Restauration','Wiederherstellung der alten, vorrevolutionären Ordnung nach 1815 (System Metternich).'],
+ ['Deutscher Bund','1815 gegründeter loser Staatenbund von 39 Staaten, kein Nationalstaat. Organ: Bundestag in Frankfurt.'],
+ ['Suspensives Veto','<b>Aufschiebendes</b> Vetorecht des Kaisers: Er kann Gesetze verzögern, aber nicht endgültig verhindern.'],
+ ['Reichsverfassungskampagne','Aufstände im Mai–Juli 1849 (Sachsen, Pfalz, Baden) zur Durchsetzung der Verfassung, von Preußen niedergeschlagen.'],
+ ['Märzministerien','Liberale Regierungen, die Fürsten im März 1848 einsetzten, um die Lage zu beruhigen.'],
+ ['Oktroyierte Verfassung','Verfassung, die ein Herrscher <b>von oben erlässt</b>, ohne Parlament (Preußen, Dezember 1848).'],
+ ['Pauperismus','Massenarmut in der ersten Hälfte des 19. Jh., Teil der „sozialen Frage“ (z. B. Weberaufstand 1844).']
+];
+let deck=[],fi=0;
+function buildDeck(){deck=CARDS.map((c,i)=>i).filter(i=>!S.cards[i]);if(!deck.length)deck=CARDS.map((c,i)=>i);fi=0;showCard();}
+function showCard(){$('#flip').classList.remove('f');const c=CARDS[deck[fi]];
+ setTimeout(()=>{$('#fcFront').textContent=c[0];$('#fcBack').innerHTML=`<b style="font-family:Fraunces,serif;font-size:1.2rem">${c[0]}</b><p>${c[1]}</p>`;},150);
+ const known=Object.keys(S.cards).length;$('#fcInfo').textContent=`Karte ${fi+1} von ${deck.length} im Stapel · ${known}/${CARDS.length} gewusst`;}
+$('#flip').onclick=()=>$('#flip').classList.toggle('f');
+$('#fcKnown').onclick=()=>{S.cards[deck[fi]]=1;save();deck.splice(fi,1);if(!deck.length){toast('🎉 Alle Karten gewusst!');buildDeck();return;}if(fi>=deck.length)fi=0;showCard();};
+$('#fcAgain').onclick=()=>{const c=deck.splice(fi,1)[0];deck.push(c);if(fi>=deck.length)fi=0;showCard();};
+$('#fcShuffle').onclick=()=>{deck=shuffle(deck);fi=0;showCard();};
+$('#fcResetCards').onclick=()=>{S.cards={};save();buildDeck();toast('Karten zurückgesetzt');};
+$('#glossary').innerHTML='<tr><th>Begriff</th><th>Erklärung</th></tr>'+CARDS.map(c=>`<tr><td><b>${c[0]}</b></td><td>${c[1]}</td></tr>`).join('');
+buildDeck();
+
+/* ---------- game 1 order ---------- */
+const ORDER=[['Februarrevolution in Paris','Feb. 1848'],['Rücktritt Metternichs in Wien','13.03.1848'],['Barrikadenkämpfe in Berlin und Zugeständnisse Friedrich Wilhelms IV.','18./19.03.1848'],['Zusammentritt der Nationalversammlung in Frankfurt','18.05.1848'],['Verabschiedung der Reichsverfassung in der Paulskirche','28.03.1849'],['Ablehnung der Kaiserkrone durch den preußischen König','03.04.1849']];
+let ocur=[];
+function oRender(check){const ul=$('#olist');ul.innerHTML='';ocur.forEach((k,i)=>{const li=document.createElement('li');
+ if(check)li.className=k===i?'good':'wrong';
+ li.innerHTML=`<span class="n">${i+1}</span><span class="tx">${ORDER[k][0]}${check&&k===i?` <span class="dt">· ${ORDER[k][1]}</span>`:''}</span><button class="ghost small" ${i==0?'disabled':''}>↑</button><button class="ghost small" ${i==ocur.length-1?'disabled':''}>↓</button>`;
+ const [u,d]=li.querySelectorAll('button');u.onclick=()=>{[ocur[i-1],ocur[i]]=[ocur[i],ocur[i-1]];oRender();$('#oRes').textContent='';};
+ d.onclick=()=>{[ocur[i+1],ocur[i]]=[ocur[i],ocur[i+1]];oRender();$('#oRes').textContent='';};ul.appendChild(li);});}
+function oNew(){do{ocur=shuffle([0,1,2,3,4,5]);}while(ocur.every((k,i)=>k===i));oRender();$('#oRes').textContent='';}
+$('#oShuffle').onclick=oNew;
+$('#oCheck').onclick=()=>{oRender(true);const n=ocur.filter((k,i)=>k===i).length;$('#oRes').textContent=n===6?'🎉 Alles richtig!':`${n}/6 richtig`;if(n===6){S.tasks.A1=1;save();}};
+oNew();
+
+/* ---------- sort games ---------- */
+function sortGame(pre,buckets,items){let sel=null,place={};
+ function render(check){const pool=$('#'+pre+'pool');pool.innerHTML='';
+  items.forEach((it,i)=>{if(place[i]!=null)return;pool.appendChild(chip(i,check));});
+  if(!pool.children.length)pool.innerHTML='<span class="muted">Alle verteilt, jetzt prüfen.</span>';
+  const bw=$('#'+pre+'b');bw.innerHTML='';
+  buckets.forEach((b,bi)=>{const d=document.createElement('div');d.className='bucket'+(sel!=null?' hot':'');d.innerHTML=`<h4>${b}</h4><div class="chips"></div>`;
+   items.forEach((it,i)=>{if(place[i]===bi)d.querySelector('.chips').appendChild(chip(i,check));});
+   d.onclick=e=>{if(sel==null)return;place[sel]=bi;sel=null;render();$('#'+pre+'res').textContent='';};bw.appendChild(d);});}
+ function chip(i,check){const c=document.createElement('span');c.className='chip'+(sel===i?' sel':'');
+  if(check&&place[i]!=null)c.classList.add(place[i]===items[i][1]?'good':'wrong');
+  c.textContent=items[i][0];c.onclick=e=>{e.stopPropagation();if(place[i]!=null&&sel==null){delete place[i];}sel=sel===i?null:i;render();};return c;}
+ $('#'+pre+'check').onclick=()=>{render(true);const n=items.filter((it,i)=>place[i]===it[1]).length;$('#'+pre+'res').textContent=n===items.length?'🎉 Perfekt!':`${n}/${items.length} richtig`+(Object.keys(place).length<items.length?' (noch nicht alle verteilt)':'');};
+ $('#'+pre+'reset').onclick=()=>{place={};sel=null;items=shuffle(items);render();$('#'+pre+'res').textContent='';};
+ items=shuffle(items);render();}
+sortGame('s1',['Freiheit','Einheit','Soziale Gerechtigkeit'],[
+ ['Pressefreiheit',0],['Meinungsfreiheit',0],['Versammlungsfreiheit',0],['Unabhängige Gerichte / Schwurgerichte',0],
+ ['Deutscher Nationalstaat',1],['Gesamtdeutsches Parlament',1],['Abschaffung der Zollgrenzen',1],
+ ['Bessere Arbeits- und Lebensbedingungen',2],['Abschaffung feudaler Lasten der Bauern',2],['Gerechtere Steuern',2]]);
+sortGame('s2',['Liberale','Demokraten','Konservative'],[
+ ['Konstitutionelle Monarchie',0],['Grundrechte und parlamentarische Mitbestimmung',0],['Wahlrecht nach Besitz und Bildung',0],
+ ['Demokratische Republik',1],['Volkssouveränität',1],['Allgemeines, gleiches Wahlrecht',1],
+ ['Erhalt der Monarchie',2],['Herrschaft von Gottes Gnaden',2],['Bewahrung der Vorrechte des Adels',2]]);
+
+/* ---------- gap text ---------- */
+const GAP=`Die Paulskirchenverfassung wurde am {28. März 1849|28.03.1849|28.3.1849} verabschiedet. Als Staatsform sah sie eine konstitutionelle {Erbmonarchie|Monarchie} vor, an deren Spitze ein {Kaiser} stehen sollte. Die gesetzgebende Gewalt (Legislative) lag beim {Reichstag}, der aus Staatenhaus und {Volkshaus} bestand. Die Rechtsprechung übernahmen {unabhängige} Gerichte. Zu den Grundrechten gehörten u. a. Meinungs-, Presse- und {Religionsfreiheit|Glaubensfreiheit}. Das Wahlrecht zum Volkshaus war allgemein, galt aber nur für {Männer}. Der Kaiser besaß nur ein {aufschiebendes|suspensives} Veto gegen Gesetze. Gewählt wurde der preußische König {Friedrich Wilhelm IV.|Friedrich Wilhelm IV|Friedrich Wilhelm}, der die Krone jedoch {ablehnte}.`;
+(function(){let i=0;$('#gaptext').innerHTML=GAP.replace(/\{([^}]+)\}/g,(m,a)=>`<input class="gap" data-a="${a}" data-i="${i++}" autocomplete="off" autocapitalize="off">`);})();
+const norm=s=>s.toLowerCase().replace(/\s+/g,' ').replace(/\.$/,'').trim();
+$('#gCheck').onclick=()=>{let n=0,all=document.querySelectorAll('.gap');all.forEach(g=>{const ok=g.dataset.a.split('|').some(a=>norm(a)===norm(g.value));g.className='gap '+(ok?'good':'wrong');if(ok)n++;});$('#gRes').textContent=n===all.length?'🎉 Alles richtig!':`${n}/${all.length} richtig`;};
+$('#gShow').onclick=()=>document.querySelectorAll('.gap').forEach(g=>{g.value=g.dataset.a.split('|')[0];g.className='gap good';});
+
+/* ---------- who am I ---------- */
+const WHO=[
+ {a:'Klemens von Metternich',h:['Ich war österreichischer Staatskanzler.','Ich prägte die Ordnung nach dem Wiener Kongress.','Die Karlsbader Beschlüsse gehen auf mich zurück.','Am 13. März 1848 trat ich zurück und floh nach England.']},
+ {a:'Friedrich Wilhelm IV.',h:['Ich war König von Preußen.','Im März 1848 ritt ich mit schwarz-rot-goldener Armbinde durch Berlin.','Ich glaubte an das Gottesgnadentum.','1849 lehnte ich die Kaiserkrone ab.']},
+ {a:'Robert Blum',h:['Ich war Abgeordneter der Linken in der Paulskirche.','Ich reiste im Oktober 1848 nach Wien, um die Aufständischen zu unterstützen.','Trotz meiner Immunität als Abgeordneter wurde ich verhaftet.','Am 9. November 1848 wurde ich hingerichtet.']},
+ {a:'Paulskirche',h:['Ich bin ein Gebäude in Frankfurt am Main.','Ursprünglich wurde ich für Gottesdienste genutzt.','Ab dem 18. Mai 1848 tagte hier ein Parlament.','Eine Verfassung trägt meinen Namen.']},
+ {a:'Rastatt',h:['Ich bin ein Ort in Baden.','Ich bin eine Festung.','Hier hielten sich 1849 die letzten Revolutionäre.','Mit meiner Kapitulation am 23. Juli 1849 endete die Revolution.']},
+ {a:'Heinrich von Gagern',h:['Ich war ein liberaler Politiker aus Hessen.','Ich war Präsident der Frankfurter Nationalversammlung.','Ich setzte mich für die kleindeutsche Lösung ein.','Von mir stammt die Idee des „kühnen Griffs“ zur provisorischen Zentralgewalt.']}
+];
+let wi=0,wh=1;
+function whoRender(){const w=WHO[wi];const opts=shuffle(WHO.map(x=>x.a));
+ $('#who').innerHTML=`<p class="muted">Rätsel ${wi+1}/${WHO.length}</p><ol>${w.h.slice(0,wh).map(x=>`<li>${x}</li>`).join('')}</ol>
+ <div class="row">${wh<w.h.length?'<button class="ghost small" id="wMore">Weiterer Hinweis</button>':''}</div>
+ <div id="wOpts">${opts.map(o=>`<button class="opt">${o}</button>`).join('')}</div><div class="row" style="margin-top:8px"><button class="ghost small" id="wNext">Nächstes Rätsel →</button></div>`;
+ if($('#wMore'))$('#wMore').onclick=()=>{wh++;whoRender();};
+ $('#wNext').onclick=()=>{wi=(wi+1)%WHO.length;wh=1;whoRender();};
+ document.querySelectorAll('#wOpts .opt').forEach(b=>b.onclick=()=>{const ok=b.textContent===w.a;b.classList.add(ok?'good':'wrong');if(ok){document.querySelectorAll('#wOpts .opt').forEach(x=>x.disabled=true);toast(wh===1?'🔥 Mit nur einem Hinweis!':'✓ Richtig!');}});}
+whoRender();
+
+/* ---------- tasks A1-A10 ---------- */
+const TASKS=[
+{id:'A1',q:'Ordnen Sie die folgenden Ereignisse chronologisch.',s:`<ol>
+<li>Februarrevolution in Paris (<b>Februar 1848</b>)</li>
+<li>Rücktritt Metternichs in Wien (<b>13. März 1848</b>)</li>
+<li>Barrikadenkämpfe in Berlin und Zugeständnisse Friedrich Wilhelms IV. (<b>18./19. März 1848</b>)</li>
+<li>Zusammentritt der Nationalversammlung in Frankfurt (<b>18. Mai 1848</b>)</li>
+<li>Verabschiedung der Reichsverfassung in der Paulskirche (<b>28. März 1849</b>)</li>
+<li>Ablehnung der Kaiserkrone durch den preußischen König (<b>3. April 1849</b>)</li></ol>
+<p class="add">Eselsbrücke: Paris → Wien → Berlin → Frankfurt → Verfassung → Absage. Erst Ausland, dann die zwei Großmächte, dann das Parlament.</p>
+<p><a href="#spiele">→ Als Spiel üben</a></p>`},
+{id:'A2',q:'Erklären Sie die folgenden Begriffe in je ein bis zwei Sätzen: Märzforderungen, Vorparlament, großdeutsche und kleindeutsche Lösung, Erbkaisertum, Paulskirchenverfassung.',s:`<ul>
+<li><b>Märzforderungen:</b> Forderungen der Revolutionäre nach Freiheit, politischer Mitbestimmung, nationaler Einheit und sozialen Verbesserungen.</li>
+<li><b>Vorparlament:</b> Eine Versammlung in Frankfurt im März und April 1848, die die Wahl und Einberufung der Nationalversammlung vorbereitete.</li>
+<li><b>Großdeutsche Lösung:</b> Ein deutscher Nationalstaat einschließlich der österreichischen Gebiete unter habsburgischem Einfluss.</li>
+<li><b>Kleindeutsche Lösung:</b> Ein deutscher Nationalstaat ohne Österreich unter Führung Preußens.</li>
+<li><b>Erbkaisertum:</b> Die Kaiserwürde wird innerhalb einer Familie vererbt, statt durch eine Wahl neu vergeben zu werden.</li>
+<li><b>Paulskirchenverfassung:</b> Die am 28. März 1849 verabschiedete Verfassung für einen deutschen Nationalstaat mit Grundrechten, Parlament und erblichem Kaiser.</li></ul>
+<p><a href="#karten">→ Mit Karteikarten üben</a></p>`},
+{id:'A3',q:'Nennen Sie vier zentrale Forderungen der Märzbewegung 1848 und ordnen Sie jede einem der Bereiche Freiheit, Einheit oder soziale Gerechtigkeit zu.',s:`<table><tr><th>Forderung</th><th>Bereich</th></tr>
+<tr><td>Presse- und Meinungsfreiheit</td><td>Freiheit</td></tr>
+<tr><td>Versammlungs- und Vereinigungsfreiheit</td><td>Freiheit</td></tr>
+<tr><td>Deutscher Nationalstaat</td><td>Einheit</td></tr>
+<tr><td>Verbesserung der Lebens- und Arbeitsbedingungen</td><td>Soziale Gerechtigkeit</td></tr></table>
+<p>Weitere wichtige Forderungen: allgemeines Wahlrecht, unabhängige Gerichte, Abschaffung feudaler Abhängigkeiten.</p>
+<p class="add">Tipp: Nimm am besten aus jedem Bereich mindestens eine Forderung, dann zeigst du, dass du alle drei verstanden hast.</p>`},
+{id:'A4',q:'Ordnen Sie je zwei Forderungen dem liberalen, dem demokratisch-republikanischen und dem konservativ-monarchischen Lager zu.',s:`<p><b>Liberale:</b></p><ul><li>Einführung einer konstitutionellen Monarchie</li><li>Sicherung von Grundrechten und parlamentarischer Mitbestimmung</li></ul>
+<p><b>Demokraten:</b></p><ul><li>Einführung einer demokratischen Republik</li><li>Volkssouveränität und allgemeines Wahlrecht</li></ul>
+<p><b>Konservative:</b></p><ul><li>Erhalt der Monarchie und der traditionellen Herrschaftsordnung</li><li>Bewahrung der bestehenden gesellschaftlichen und politischen Verhältnisse</li></ul>
+<p><a href="#lager">→ Ausführliche Übersicht der Lager</a></p>`},
+{id:'A5',q:'Beschreiben Sie den Verlauf der Märzrevolution 1848 in Wien und Berlin und erläutern Sie, warum die Fürsten zunächst nachgaben.',s:`<p><b>Wien:</b> Die Februarrevolution in Frankreich hatte Signalwirkung. Die Bevölkerung forderte politische Freiheit und Reformen. Staatskanzler Metternich trat zurück und floh ins Exil.</p>
+<p><b>Berlin:</b> Am 18. März 1848 kam es zu Demonstrationen und Barrikadenkämpfen zwischen Bürgern und Militär. Friedrich Wilhelm IV. ließ zunächst auf die Demonstranten schießen. Nach den Kämpfen zog er seine Truppen zurück und machte politische Zugeständnisse. Er versprach Reformen und eine Verfassung.</p>
+<p><b>Warum gaben die Fürsten zunächst nach?</b> Die Fürsten wollten die Revolution beruhigen, ihre Herrschaft sichern und einen Bürgerkrieg verhindern. Außerdem fürchteten sie, durch weitere Gewalt ihre Macht vollständig zu verlieren. Deshalb machten sie zunächst Zugeständnisse, um <b>Zeit zu gewinnen</b>.</p>
+<p class="add">Ergänzung für mehr Punkte: In Wien kam es am 13. März zu Unruhen von Studenten und Bürgern; Kaiser Ferdinand versprach eine Verfassung. In Berlin starben bei den Kämpfen mehrere hundert Menschen („Märzgefallene“). Die Fürsten setzten liberale „Märzministerien“ ein.</p>`},
+{id:'A6',q:'Erläutern Sie die Zusammensetzung der Frankfurter Nationalversammlung (Wahlrecht, soziale Herkunft der Abgeordneten, politische Fraktionen) und nehmen Sie Stellung zur Bezeichnung „Professorenparlament“.',s:`<p><b>Wahlrecht:</b> Die Abgeordneten wurden 1848 indirekt durch männliche Wahlberechtigte gewählt. Frauen waren vom Wahlrecht ausgeschlossen.</p>
+<p><b>Soziale Herkunft:</b> Hauptsächlich gebildete Bürger: Professoren, Juristen, Beamte und Lehrer. Arbeiter und Bauern waren stark unterrepräsentiert.</p>
+<p><b>Politische Fraktionen:</b></p><ul><li><b>Liberale:</b> Befürworter einer konstitutionellen, also parlamentarisch kontrollierten Monarchie.</li><li><b>Demokraten:</b> Befürworter einer Republik und umfassender Volkssouveränität.</li></ul>
+<p><b>Warum „Professorenparlament“?</b> Viele Abgeordnete waren Professoren, Juristen und andere gebildete Bürger.</p>
+<p><b>Stellungnahme:</b> Die Bezeichnung ist teilweise berechtigt, da viele Intellektuelle vertreten waren. Allerdings waren auch andere Berufsgruppen beteiligt. Arbeiter und Bauern waren jedoch deutlich unterrepräsentiert. Dadurch fehlte eine breite gesellschaftliche Vertretung.</p>
+<p class="add">Für die Stellungnahme: Professoren stellten nur einen Teil der rund 800 Abgeordneten; die größte Gruppe waren Juristen und Beamte. Treffender wäre daher „Beamten- oder Juristenparlament“. Der Begriff trifft aber den Kern: ein Parlament des <b>Bildungsbürgertums</b>, das lange theoretisch debattierte. Bau deine Stellungnahme so: These → Argumente dafür → Argumente dagegen → eigenes Urteil.</p>`},
+{id:'A7',q:'Erläutern Sie die wichtigsten Inhalte der Paulskirchenverfassung (Staatsform, Gewaltenteilung, Grundrechte, Wahlrecht, Stellung des Kaisers). (8 BE)',s:`<p>Am 28. März 1849 verabschiedete die Frankfurter Nationalversammlung die Paulskirchenverfassung. Sie sollte die Grundlage eines deutschen Nationalstaates bilden.</p>
+<p><b>1. Staatsform:</b> Konstitutionelle Erbmonarchie. Ein Kaiser sollte an der Spitze des Deutschen Reiches stehen, seine Macht war durch die Verfassung begrenzt.</p>
+<p><b>2. Gewaltenteilung:</b></p><ul><li>Legislative: Reichstag (Staatenhaus + Volkshaus) als gesetzgebende Gewalt</li><li>Exekutive: Kaiser und Regierung (Reichsminister)</li><li>Judikative: unabhängige Gerichte, Reichsgericht</li></ul>
+<p><b>3. Grundrechte:</b> u. a. Meinungs- und Pressefreiheit, Religionsfreiheit, Gleichheit vor dem Gesetz, Versammlungsfreiheit, Abschaffung von Standesvorrechten.</p>
+<p><b>4. Wahlrecht:</b> Allgemeines, gleiches und geheimes Wahlrecht für Männer zum Volkshaus. Frauen waren ausgeschlossen.</p>
+<p><b>5. Stellung des Kaisers:</b> Staatsoberhaupt, ernennt die Regierung, vertritt das Reich nach außen, hat ein <b>aufschiebendes</b> (suspensives) Veto gegen Gesetze. Seine Macht ist durch die Verfassung begrenzt.</p>
+<p><b>Bedeutung:</b> Ein wichtiger Schritt in Richtung Demokratie, Rechtsstaatlichkeit und nationale Einheit in Deutschland.</p>
+<p class="add">8 BE heißt: Zu jedem der 5 Punkte mindestens einen erklärenden Satz schreiben, nicht nur Stichworte. Mögliche Bewertung: Die Verfassung war ein Kompromiss zwischen Liberalen (Monarchie) und Demokraten (allgemeines Wahlrecht). <a href="#spiele">→ Lückentext üben</a></p>`},
+{id:'A8',q:'Erläutern Sie, welche Folgen die fehlende Machtbasis der Nationalversammlung für ihre Handlungsfähigkeit hatte.',s:`<p>Die Nationalversammlung hatte <b>keine eigene Armee, Verwaltung oder Polizei</b>. Sie war deshalb auf die Unterstützung der Fürsten und der Einzelstaaten angewiesen.</p>
+<p>Die Fürsten konnten die Beschlüsse der Nationalversammlung ignorieren und ihre militärische Macht einsetzen. Dadurch konnte die Nationalversammlung ihre Entscheidungen nicht selbstständig durchsetzen.</p>
+<p><b>Folge:</b> Die Nationalversammlung war politisch abhängig und konnte sich gegen die Fürsten und das Militär nicht behaupten. Ihre Handlungsfähigkeit war stark eingeschränkt.</p>
+<p class="add">Beispiele, die Punkte bringen: Waffenstillstand von Malmö (Aug./Sept. 1848), bei dem Preußen eigenmächtig handelte; der Reichsverweser hatte keine Truppen; bei den Septemberunruhen in Frankfurt musste das Parlament preußische und österreichische Truppen zu Hilfe rufen, also genau die Mächte, gegen die sich die Revolution richtete. 1849 riefen Preußen und Österreich einfach ihre Abgeordneten zurück.</p>`},
+{id:'A9',q:'Rolle Friedrich Wilhelms IV. von Preußen: Beschreiben Sie das Verhalten des Königs während der Märzrevolution in Berlin und erläutern Sie, welche Motive hinter seinen Zugeständnissen standen.',s:`<p><b>Verhalten:</b></p><ul><li>Zunächst ließ er auf die Demonstranten schießen.</li><li>Nach den Barrikadenkämpfen am 18. März 1848 zog er seine Truppen zurück.</li><li>Er zeigte sich öffentlich mit der schwarz-rot-goldenen Fahne (Umritt am 21. März).</li><li>Er versprach politische Reformen und unterstützte zunächst die nationale Einigungsbewegung.</li></ul>
+<p><b>Motive:</b> Revolution beruhigen, Monarchie und eigene Macht erhalten, gewaltsamen Umsturz verhindern. Er hoffte, die Revolution kontrollieren und später wieder rückgängig machen zu können.</p>
+<p><b>Zusammenfassend:</b> Friedrich Wilhelm IV. machte Zugeständnisse vor allem aus <b>taktischen Gründen</b>, um seine Herrschaft zu sichern. Er war kein überzeugter Anhänger einer demokratischen Revolution.</p>
+<p class="add">Beleg für die Taktik: Ab November 1848 ließ er Berlin durch General Wrangel besetzen, löste die preußische Nationalversammlung auf und erließ im Dezember eine Verfassung von oben (oktroyiert).</p>`},
+{id:'A10',q:'Erläutern Sie, warum Friedrich Wilhelm IV. die ihm 1849 angetragene Kaiserkrone ablehnte und welche Folgen diese Entscheidung für die Nationalversammlung und die Revolution hatte.',s:`<p><b>Gründe der Ablehnung:</b></p><ul><li>Er wollte keine Krone annehmen, die ihm von einer <b>gewählten Volksvertretung</b> angeboten wurde.</li><li>Er vertrat das <b>Gottesgnadentum</b>: Seine Herrschaft sollte von Gott, nicht vom Volk legitimiert sein.</li><li>Er wollte seine monarchische Macht nicht von einem Parlament abhängig machen.</li></ul>
+<p class="add">Zusätzliche Gründe: Er wollte keinen Konflikt mit Österreich riskieren und keine Zustimmung ohne die anderen Fürsten. In einem Brief nannte er die Krone abfällig einen „Reif aus Dreck und Letten“ mit dem „Ludergeruch der Revolution“.</p>
+<p><b>Folgen für Nationalversammlung und Revolution:</b></p>
+<ul class="add" style="font-style:normal;color:var(--ink)"><li>Die Verfassung hatte kein Staatsoberhaupt und konnte nicht in Kraft treten. Das Hauptziel der Nationalversammlung war damit gescheitert.</li><li>Österreich, Preußen und weitere Staaten erkannten die Verfassung nicht an und riefen ihre Abgeordneten ab.</li><li>Die Nationalversammlung zerfiel, ein Rumpfparlament wich nach Stuttgart aus und wurde am 18. Juni 1849 aufgelöst.</li><li>Die Reichsverfassungskampagne (Sachsen, Pfalz, Baden) wurde von preußischen Truppen niedergeschlagen, Rastatt fiel am 23. Juli 1849.</li></ul>
+<p><b>Ergebnis:</b> Die Revolution von 1848/49 scheiterte. Die Fürsten konnten ihre Macht weitgehend wiederherstellen. Die Forderungen nach nationaler Einheit und politischer Freiheit blieben zunächst unerfüllt.</p>`}
+];
+function renderTasks(){$('#tasks').innerHTML=TASKS.map(t=>`<div class="task" id="t-${t.id}"><div class="hd"><span class="tag">${t.id}</span><span class="q">${t.q}</span><span class="done">${S.tasks[t.id]?'✅':'⬜'}</span></div>
+<div class="bd"><textarea placeholder="Erst selbst antworten: Stichpunkte oder ganzer Text …" data-id="${t.id}">${(S.notes[t.id]||'').replace(/</g,'&lt;')}</textarea>
+<div class="row" style="margin-top:8px"><button class="small showsol">Lösung aufdecken</button><button class="ghost small mark">${S.tasks[t.id]?'Als offen markieren':'✓ Kann ich'}</button></div>
+<div class="sol">${t.s}<p class="add" style="margin-top:10px">Kursiv grau = Ergänzung zu deinen Lösungen.</p></div></div></div>`).join('');
+ document.querySelectorAll('.task').forEach(el=>{const id=el.id.slice(2);
+  el.querySelector('.hd').onclick=()=>el.classList.toggle('open');
+  el.querySelector('.showsol').onclick=e=>{const s=el.querySelector('.sol');s.classList.toggle('show');e.target.textContent=s.classList.contains('show')?'Lösung verbergen':'Lösung aufdecken';};
+  el.querySelector('.mark').onclick=()=>{S.tasks[id]=S.tasks[id]?0:1;if(!S.tasks[id])delete S.tasks[id];save();el.querySelector('.done').textContent=S.tasks[id]?'✅':'⬜';el.querySelector('.mark').textContent=S.tasks[id]?'Als offen markieren':'✓ Kann ich';if(S.tasks[id])toast(id+' erledigt!');};
+  el.querySelector('textarea').oninput=e=>{S.notes[id]=e.target.value;save();};});}
+renderTasks();
+
+/* ---------- quiz ---------- */
+const QZ=[
+ ['Welches Ereignis löste die Märzrevolution in Deutschland aus?',['Die Februarrevolution in Paris','Das Hambacher Fest','Der Weberaufstand','Der Wiener Kongress'],0,'Die Februarrevolution 1848 in Paris hatte Signalwirkung für ganz Europa.'],
+ ['Wann trat Metternich zurück?',['13. März 1848','18. März 1848','18. Mai 1848','3. April 1849'],0,'Am 13. März 1848, nach Unruhen in Wien.'],
+ ['Wann trat die Nationalversammlung in der Paulskirche zusammen?',['18. Mai 1848','31. März 1848','28. März 1849','18. März 1848'],0,'Am 18. Mai 1848 in Frankfurt am Main.'],
+ ['Was bereitete das Vorparlament vor?',['Die Wahl der Nationalversammlung','Die Kaiserwahl','Den Krieg gegen Dänemark','Die preußische Verfassung'],0,'Das Vorparlament (März/April 1848) bereitete Wahl und Einberufung der Nationalversammlung vor.'],
+ ['Was bedeutet „kleindeutsche Lösung“?',['Nationalstaat ohne Österreich unter Preußens Führung','Nationalstaat mit Österreich','Kleine Einzelstaaten bleiben bestehen','Nur Norddeutschland wird vereint'],0,'Ohne Österreich, unter Führung Preußens. Sie setzte sich in der Paulskirche durch.'],
+ ['Welche Staatsform sah die Paulskirchenverfassung vor?',['Konstitutionelle Erbmonarchie','Demokratische Republik','Absolute Monarchie','Wahlkaisertum auf Zeit'],0,'Ein erblicher Kaiser, dessen Macht durch die Verfassung begrenzt war.'],
+ ['Welches Veto hatte der Kaiser laut Paulskirchenverfassung?',['Ein aufschiebendes (suspensives) Veto','Ein absolutes Veto','Gar keines','Ein Veto nur bei Kriegsfragen'],0,'Er konnte Gesetze nur verzögern, nicht endgültig verhindern.'],
+ ['Wer durfte zum Volkshaus wählen?',['Männer (allgemeines Wahlrecht)','Alle Erwachsenen','Nur Grundbesitzer','Nur Adlige und Beamte'],0,'Allgemeines Wahlrecht für Männer, Frauen waren ausgeschlossen.'],
+ ['Warum lehnte Friedrich Wilhelm IV. die Kaiserkrone ab?',['Er sah seine Herrschaft als von Gott gegeben, nicht vom Volk','Er war schon zu alt','Österreich hatte ihn bedroht','Die Verfassung war ihm zu konservativ'],0,'Gottesgnadentum: Eine Krone von einem gewählten Parlament lehnte er ab.'],
+ ['Wann lehnte der preußische König die Kaiserkrone ab?',['3. April 1849','28. März 1849','18. Mai 1848','23. Juli 1849'],0,'Am 3. April 1849 gegenüber der Kaiserdeputation (endgültig am 28. April).'],
+ ['Was war das Hauptproblem der Nationalversammlung?',['Sie hatte keine eigene Armee und Verwaltung','Sie hatte zu viele Arbeiter als Mitglieder','Sie war nicht gewählt','Sie tagte nur einmal im Jahr'],0,'Ohne Machtmittel war sie auf die Fürsten angewiesen (A8).'],
+ ['Warum heißt die Nationalversammlung „Professorenparlament“?',['Viele Abgeordnete waren Professoren, Juristen und Gebildete','Sie tagte in einer Universität','Nur Professoren durften wählen','Sie wurde von Professoren bezahlt'],0,'Das Bildungsbürgertum dominierte, Arbeiter und Bauern fehlten.'],
+ ['Was forderten die Demokraten?',['Republik und Volkssouveränität','Konstitutionelle Monarchie','Erhalt der Fürstenmacht','Rückkehr zum Absolutismus'],0,'Demokraten wollten eine demokratische Republik mit allgemeinem Wahlrecht.'],
+ ['Was forderten die Liberalen?',['Konstitutionelle Monarchie mit Grundrechten','Abschaffung jeder Monarchie','Herrschaft von Gottes Gnaden','Sozialistische Revolution'],0,'Monarchie ja, aber an eine Verfassung gebunden.'],
+ ['Was taten die Fürsten im März 1848 zunächst?',['Sie gaben nach und machten Zugeständnisse','Sie flohen alle ins Ausland','Sie dankten alle ab','Sie riefen die Republik aus'],0,'Sie gaben nach, um die Lage zu beruhigen und Zeit zu gewinnen.'],
+ ['Was tat Friedrich Wilhelm IV. am 21. März 1848?',['Umritt durch Berlin mit schwarz-rot-goldenen Farben','Er ließ auf die Menge schießen','Er floh nach England','Er nahm die Kaiserkrone an'],0,'Er zeigte sich demonstrativ mit den Farben der Nationalbewegung.'],
+ ['Welches Ereignis markiert das endgültige Ende der Revolution?',['Kapitulation von Rastatt (23. Juli 1849)','Ablehnung der Kaiserkrone','Rücktritt Metternichs','Waffenstillstand von Malmö'],0,'Mit dem Fall der Festung Rastatt in Baden war die Revolution beendet.'],
+ ['Was war der Waffenstillstand von Malmö (1848)?',['Preußen beendete den Krieg gegen Dänemark ohne die Nationalversammlung','Ein Friedensvertrag mit Frankreich','Ein Abkommen zwischen Österreich und Preußen über die Krone','Ein Ende der Berliner Barrikadenkämpfe'],0,'Er zeigte die Machtlosigkeit der Nationalversammlung.'],
+ ['Was bedeutet „Erbkaisertum“?',['Die Kaiserwürde wird in einer Familie vererbt','Der Kaiser wird alle 6 Jahre gewählt','Der Kaiser erbt das Vermögen des Staates','Jeder Fürst kann Kaiser werden'],0,'Erblich statt durch Wahl.'],
+ ['Wann fand das Hambacher Fest statt?',['1832','1815','1844','1848'],0,'Am 27. Mai 1832, Startpunkt deiner Zeitleiste.'],
+ ['Wer war Robert Blum?',['Linker Abgeordneter, 1848 in Wien hingerichtet','Preußischer General','Präsident der Nationalversammlung','Österreichischer Kaiser'],0,'Seine Hinrichtung am 9. November 1848 zeigte die Macht der Gegenrevolution.'],
+ ['Welche Gruppe war in der Nationalversammlung stark unterrepräsentiert?',['Arbeiter und Bauern','Juristen','Beamte','Professoren'],0,'Daher fehlte eine breite gesellschaftliche Vertretung.'],
+ ['Welche der folgenden Forderungen gehört zum Bereich „Einheit“?',['Deutscher Nationalstaat','Pressefreiheit','Bessere Arbeitsbedingungen','Versammlungsfreiheit'],0,'Einheit = ein gemeinsamer deutscher Nationalstaat.'],
+ ['Welche langfristige Wirkung hatte die Paulskirchenverfassung?',['Vorbild für Weimarer Verfassung und Grundgesetz','Sie galt bis 1918','Sie führte direkt zur Reichsgründung 1849','Sie hatte keinerlei Wirkung'],0,'Ihr Grundrechtekatalog wirkte in Weimar (1919) und im Grundgesetz (1949) nach.'],
+ ['Was war die Reichsverfassungskampagne?',['Aufstände 1849 zur Durchsetzung der Verfassung','Wahlkampf zur Nationalversammlung','Kampagne Preußens gegen Österreich','Volksabstimmung über die Verfassung'],0,'Aufstände in Sachsen, Pfalz und Baden, von Preußen niedergeschlagen.']
+];
+let qs=[],qi=0,qok=0;
+function qStart(){qs=shuffle(QZ).map(q=>{const o=shuffle(q[1].map((t,i)=>({t,c:i===q[2]})));return {q:q[0],o,e:q[3]};});qi=0;qok=0;qShow();}
+function qShow(){$('#qbest').textContent=S.best?`Dein bestes Ergebnis: ${S.best}/${QZ.length}`:`${QZ.length} Fragen. Nach jeder Antwort siehst du die Erklärung.`;
+ if(qi>=qs.length){const p=Math.round(qok/qs.length*100);if(qok>S.best){S.best=qok;save();}
+  $('#qbox').innerHTML=`<div style="text-align:center"><div class="score">${qok}/${qs.length}</div><p>${p>=90?'🏆 Klausurreif!':p>=70?'💪 Sehr gut, noch ein paar Lücken.':p>=50?'📚 Ordentlich, geh nochmal die Aufgaben durch.':'🔁 Lies die Zeitleiste und Aufgaben nochmal, dann neuer Versuch.'}</p><button id="qAgain">Nochmal (neu gemischt)</button></div>`;
+  $('#qAgain').onclick=qStart;return;}
+ const q=qs[qi];
+ $('#qbox').innerHTML=`<div class="row" style="justify-content:space-between"><span class="muted">Frage ${qi+1}/${qs.length}</span><span class="muted">✓ ${qok}</span></div><div class="bar" style="margin:8px 0 14px"><i style="width:${qi/qs.length*100}%"></i></div><h3>${q.q}</h3>${q.o.map((o,i)=>`<button class="opt" data-i="${i}">${o.t}</button>`).join('')}<div class="expl" id="qe"></div><div class="row" style="margin-top:10px"><button id="qn" style="display:none">Weiter →</button></div>`;
+ document.querySelectorAll('#qbox .opt').forEach(b=>b.onclick=()=>{const o=q.o[b.dataset.i];
+  document.querySelectorAll('#qbox .opt').forEach((x,i)=>{x.disabled=true;if(q.o[i].c)x.classList.add('good');});
+  if(o.c)qok++;else b.classList.add('wrong');
+  $('#qe').style.display='block';$('#qe').innerHTML=(o.c?'✓ <b>Richtig.</b> ':'✗ <b>Leider falsch.</b> ')+q.e;$('#qn').style.display='';});
+ $('#qn').onclick=()=>{qi++;qShow();};}
+qStart();
+
+/* ---------- progress ---------- */
+function progress(){const t=Object.keys(S.tasks).length/10,c=Object.keys(S.cards).length/CARDS.length,q=S.best/QZ.length;
+ const p=Math.round((t*.45+c*.25+q*.30)*100);$('#pct').textContent=p+' %';$('#pbar').style.width=p+'%';}
+$('#reset').onclick=()=>{S={tasks:{},cards:{},best:0,notes:{}};save();renderTasks();buildDeck();qStart();toast('Zurückgesetzt');};
+progress();route();
+</script>
+</body>
+</html>

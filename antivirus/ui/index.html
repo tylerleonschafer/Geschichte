@@ -395,6 +395,33 @@
   </main>
 </div>
 
+<!-- ================================ JARVIS ================================ -->
+<button class="jarvis-orb" id="jarvis-orb" type="button" data-state="idle" aria-expanded="false"
+        title="Jarvis – dein Sprachassistent (Alt+J)" aria-label="Jarvis öffnen">
+  <span class="orb-ring r2"></span><span class="orb-ring r1"></span><span class="orb-core"></span>
+</button>
+<section class="jarvis" id="jarvis" data-state="idle" aria-label="Jarvis Sprachassistent" hidden>
+  <header class="jarvis-head">
+    <span class="jarvis-avatar"><span class="orb-ring r1"></span><span class="orb-core"></span></span>
+    <div class="jarvis-title"><b>J.A.R.V.I.S.</b><small id="jarvis-status">Bereit</small></div>
+    <button class="icon-btn sm" type="button" id="jarvis-voice" title="Sprachausgabe an/aus"></button>
+    <button class="icon-btn sm" type="button" id="jarvis-wake" title="Ständig auf „Jarvis“ hören"></button>
+    <button class="icon-btn sm" type="button" id="jarvis-close" title="Schließen (Esc)" aria-label="Schließen"></button>
+  </header>
+  <div class="jarvis-log" id="jarvis-log" aria-live="polite"></div>
+  <div class="jarvis-chips" id="jarvis-chips">
+    <button type="button">Statusbericht</button>
+    <button type="button">Ist jemand mit meinem PC verbunden?</button>
+    <button type="button">Starte einen Schnellscan</button>
+    <button type="button">Was kannst du?</button>
+  </div>
+  <form class="jarvis-input" id="jarvis-form" autocomplete="off">
+    <button class="jarvis-mic" type="button" id="jarvis-mic" aria-label="Sprechen"></button>
+    <input type="text" id="jarvis-text" placeholder="Sag oder tippe etwas …" maxlength="500" aria-label="Nachricht an Jarvis">
+    <button class="jarvis-send" type="submit" aria-label="Senden"></button>
+  </form>
+</section>
+
 <div class="toasts" id="toasts" aria-live="polite"></div>
 <div class="modal-root" id="modal-root"></div>
 <div class="overlay" id="offline" hidden>
@@ -405,5 +432,6 @@
   </div>
 </div>
 <script src="app.js"></script>
+<script src="jarvis.js"></script>
 </body>
 </html>

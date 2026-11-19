@@ -53,6 +53,29 @@ Der Netzwerk-Wächter prüft alle paar Sekunden jede Verbindung und erkennt u. a
 kappen → Programm dahinter beenden. Mit dem **Panik-Knopf** fliegen alle gefährlichen
 Verbindungen auf einmal raus, und der **automatische Rauswurf** erledigt das ohne Rückfrage.
 
+### 🤖 Jarvis – dein Sprachassistent
+Klick auf die leuchtende Kugel unten rechts (oder drück **Alt+J**) und sprich oder tippe:
+
+| Du sagst | Jarvis … |
+| --- | --- |
+| „Statusbericht“ / „Bin ich sicher?“ | nennt den Sicherheits-Score und alle Lücken |
+| „Ist jemand mit meinem PC verbunden?“ | macht den Hacker-Check |
+| „Wirf die Hacker raus!“ / „Panik!“ | fragt nach und wirft alle Eindringlinge raus |
+| „Starte einen Schnellscan“ / „Vollständiger Scan“ | startet den Scan und meldet sich, wenn er fertig ist |
+| „Welche Viren hast du gefunden?“ | zählt die Funde auf und bietet die Quarantäne an |
+| „Was bremst meinen PC?“ | zeigt verdächtige oder hungrige Programme |
+| „Echtzeitschutz aus“ / „Automatischer Rauswurf an“ | schaltet Schutzmodule |
+| „Sperre IP 45.13.12.7“ | sperrt eine IP nach Rückfrage |
+| „Teste den Schutz“ · „Helles Design“ · „Erzähl einen Witz“ · „Hilfe“ | … probier's aus |
+
+Mit dem **Ohr-Symbol** hört Jarvis ständig zu – dann reicht „Jarvis, Statusbericht“. Bei
+gefährlichen Aktionen fragt er immer erst nach. Gefahren sagt er von selbst an.
+
+Gut zu wissen: Das *Verstehen* der Befehle passiert komplett lokal auf deinem PC. Die
+*Spracherkennung* (Mikrofon → Text) übernimmt aber dein Browser – das geht in **Chrome und
+Edge**, die die Aufnahme dafür an Google bzw. Microsoft schicken. Tippen funktioniert in
+jedem Browser und bleibt ganz bei dir.
+
 ### 🧠 Prozesse, 📦 Quarantäne, 📜 Protokoll
 - Prozessliste mit Risiko-Bewertung (z. B. falscher `svchost.exe`, `svch0st.exe`, Miner, Hacker-Tools)
 - Quarantäne verschlüsselt Dateien, sodass sie nichts mehr anrichten können – Wiederherstellen jederzeit möglich
@@ -79,12 +102,14 @@ antivirus/
 │   ├── scanner.py         Scanner, Heuristiken, ZIP-/Office-Analyse
 │   ├── realtime.py        Echtzeitschutz + Wächter im Hintergrund
 │   ├── netguard.py        Hacker-Abwehr: Verbindungen bewerten & rauswerfen
+│   ├── jarvis.py          Sprachassistent: versteht deutsche Befehle
 │   ├── firewall.py        IP-Sperren (Windows-Firewall, iptables, Blackhole-Route)
 │   ├── processes.py       Prozess-Wächter
 │   ├── quarantine.py      Quarantäne
 │   ├── server.py          Lokaler Webserver (nur 127.0.0.1, mit geheimem Token)
 │   └── app.py             Verbindet alles
-├── ui/                    Oberfläche (HTML, CSS, JavaScript – ohne Internet-Abhängigkeiten)
+├── ui/                    Oberfläche (HTML, CSS, JavaScript – ohne Internet-Abhängigkeiten),
+│                          jarvis.js = Mikrofon, Sprachausgabe und Chat-Fenster
 └── signaturen/hashes.txt  Eingebaute Prüfsummen
 ```
 

@@ -9,6 +9,7 @@ from pathlib import Path
 from . import config
 from .events import EventLog
 from .firewall import Firewall
+from .jarvis import Jarvis
 from .netguard import NetGuard
 from .processes import ProcessGuard
 from .quarantine import Quarantine, QuarantineError
@@ -38,6 +39,7 @@ class App:
         self.net = NetGuard(self)
         self.realtime = RealtimeWatcher(self)
         self.guard = GuardThread(self)
+        self.jarvis = Jarvis(self)
         self.shutdown_callback = None
 
     def start(self) -> None:

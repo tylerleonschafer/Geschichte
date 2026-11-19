@@ -47,6 +47,10 @@
     arrowOut: '<path d="M5 12h14M13 6l6 6-6 6"/>',
     ear: '<path d="M6 8.5a6 6 0 1112 0c0 3.5-3 4.5-3 7.5a3 3 0 01-6 0"/><path d="M10 8.5a2 2 0 114 0"/>',
     terminal: '<path d="M4 17l6-6-6-6M12 19h8"/>',
+    mic: '<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v4M8 22h8"/>',
+    volume: '<path d="M11 5L6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 010 7M19 5a10 10 0 010 14"/>',
+    volumeOff: '<path d="M11 5L6 9H2v6h4l5 4z"/><path d="M22 9l-6 6M16 9l6 6"/>',
+    send: '<path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/>',
   };
   const icon = (n, cls = "") => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n] || ""}</svg>`;
   const hydrateIcons = (root = document) => $$("i[data-icon]", root).forEach((el) => { el.outerHTML = icon(el.dataset.icon); });
@@ -104,6 +108,7 @@
     net: null, netFilter: "wichtig", netSearch: "", procs: null, procFilter: "alle", procSort: "risk", procSearch: "",
     logFilter: "alle", settings: null, wasScanning: false, offline: false,
   };
+  const LISTENERS = [];
 
   async function api(path, body) {
     const opts = { method: body === undefined ? "GET" : "POST", headers: { "X-Schutzschild-Token": token || "" } };
@@ -246,6 +251,7 @@
           toast(e.level, e.message, e.detail);
           if (e.level === "danger") notifyDesktop("Schutzschild: " + e.message, e.detail || "");
         }
+        for (const fn of LISTENERS) { try { fn(st.events); } catch { /* Zuhörer-Fehler ignorieren */ } }
         if (S.page === "protokoll") renderLog();
         if (S.page === "uebersicht") renderDashEvents();
         if (S.page === "scanner" && st.events.some((e) => e.category === "Echtzeitschutz")) loadThreats();
@@ -841,6 +847,22 @@
       await modal({ title: "Administratorrechte", icon: "lock", cancel: null, body: `<p>${esc(res.message)}</p>` });
     }
   }
+
+  // ------------------------------------------------------------------ Schnittstelle für Jarvis
+  window.Schutzschild = {
+    api, icon, esc, toast, modal,
+    navigate: (page) => { location.hash = "#/" + page; },
+    setTheme: (t) => {
+      document.documentElement.dataset.theme = t;
+      try { localStorage.setItem("ss-theme", t); } catch { /* egal */ }
+      $("#theme-btn").innerHTML = icon(t === "dark" ? "sun" : "moon");
+    },
+    elevate: () => elevate(null),
+    refresh: () => { loadPage(); },
+    status: () => S.status,
+    onEvents: (fn) => { LISTENERS.push(fn); },
+    ready: () => !!token,
+  };
 
   // ------------------------------------------------------------------ Start
   wire();

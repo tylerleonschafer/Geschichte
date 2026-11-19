@@ -21,7 +21,7 @@ from .quarantine import QuarantineError
 from .scanner import ScanError
 
 STATIC = {"/": "index.html", "/index.html": "index.html", "/app.js": "app.js", "/style.css": "style.css",
-          "/icon.svg": "icon.svg"}
+          "/icon.svg": "icon.svg", "/jarvis.js": "jarvis.js"}
 # Fest eingetragen, weil Windows sonst manchmal falsche Typen aus der Registry liefert
 CONTENT_TYPES = {".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8",
                  ".css": "text/css; charset=utf-8", ".svg": "image/svg+xml; charset=utf-8"}
@@ -75,6 +75,7 @@ class Api:
             ("POST", "/api/eicar"): lambda q, b: self.app.create_eicar(),
             ("POST", "/api/elevate"): lambda q, b: self.app.elevate(),
             ("POST", "/api/shutdown"): self.shutdown,
+            ("POST", "/api/jarvis"): self.jarvis,
         }
 
     def status(self, q, b):
@@ -197,6 +198,10 @@ class Api:
         self.app.events.add("ok", "Signaturen",
                             f"{res['added']} neue Signaturen geladen ({res['total']} online insgesamt)")
         return {"ok": True, **res, "signatures": self.app.sigdb.stats()}
+
+    def jarvis(self, q, b):
+        pending = b.get("pending")
+        return self.app.jarvis.handle(_str(b, "text", 500), pending if isinstance(pending, dict) else None)
 
     def shutdown(self, q, b):
         if self.app.shutdown_callback:

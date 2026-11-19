@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="de" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Schutzschild</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="backdrop" aria-hidden="true"></div>
+
+<div class="app">
+  <aside class="sidebar">
+    <a class="brand" href="#/uebersicht">
+      <svg class="brand-logo" viewBox="0 0 64 64" aria-hidden="true">
+        <defs><linearGradient id="bl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38bdf8"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs>
+        <path d="M32 4l24 9v18c0 15-10.5 25.5-24 29C18.5 56.5 8 46 8 31V13z" fill="url(#bl)"/>
+        <path d="M32 4l24 9v9c-14 4-31-3-48 3V13z" fill="#fff" opacity=".14"/>
+        <path d="M21 33l7.5 7.5L44 25" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span><span class="brand-name">Schutzschild</span><span class="brand-sub">Antivirus <span id="version"></span></span></span>
+    </a>
+    <nav class="nav" id="nav">
+      <a href="#/uebersicht" data-page="uebersicht"><i data-icon="home"></i><span>Übersicht</span></a>
+      <a href="#/scanner" data-page="scanner"><i data-icon="scan"></i><span>Virenscan</span><b class="badge" id="badge-threats" hidden></b></a>
+      <a href="#/abwehr" data-page="abwehr"><i data-icon="radar"></i><span>Hacker-Abwehr</span><b class="badge" id="badge-net" hidden></b></a>
+      <a href="#/prozesse" data-page="prozesse"><i data-icon="cpu"></i><span>Prozesse</span><b class="badge" id="badge-procs" hidden></b></a>
+      <a href="#/quarantaene" data-page="quarantaene"><i data-icon="box"></i><span>Quarantäne</span><b class="badge soft" id="badge-q" hidden></b></a>
+      <a href="#/protokoll" data-page="protokoll"><i data-icon="list"></i><span>Protokoll</span></a>
+      <a href="#/einstellungen" data-page="einstellungen"><i data-icon="sliders"></i><span>Einstellungen</span></a>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="mini-status" id="mini-status" data-level="ok">
+        <span class="pulse-dot"></span>
+        <span><b id="mini-title">Wird geladen …</b><small id="mini-sub">Schutzmodule starten</small></span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <h1 id="page-title">Übersicht</h1>
+        <p id="page-sub" class="muted"></p>
+      </div>
+      <div class="topbar-right">
+        <button class="chip-btn" id="admin-chip" type="button"></button>
+        <button class="icon-btn" id="theme-btn" type="button" title="Hell/Dunkel umschalten" aria-label="Hell/Dunkel umschalten"></button>
+      </div>
+    </header>
+
+    <!-- ================================ ÜBERSICHT ================================ -->
+    <section class="page" data-page="uebersicht">
+      <div class="card hero" id="hero" data-level="ok">
+        <div class="hero-shield">
+          <span class="ring"></span><span class="ring"></span><span class="ring"></span>
+          <svg viewBox="0 0 160 180" class="shield-svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" class="s1"/><stop offset="1" class="s2"/></linearGradient>
+            </defs>
+            <path d="M80 8 L146 32 V86 C146 128 117 160 80 172 C43 160 14 128 14 86 V32 Z" fill="url(#sg)"/>
+            <path d="M80 8 L146 32 V58 C108 70 58 50 14 62 V32 Z" fill="#fff" opacity=".13"/>
+            <g class="si si-ok"><path d="M50 92 L71 113 L111 71" fill="none" stroke="#fff" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></g>
+            <g class="si si-warn"><path d="M80 56 V102" stroke="#fff" stroke-width="13" stroke-linecap="round"/><circle cx="80" cy="126" r="8" fill="#fff"/></g>
+            <g class="si si-bad"><path d="M57 69 L103 115 M103 69 L57 115" stroke="#fff" stroke-width="13" stroke-linecap="round"/></g>
+          </svg>
+        </div>
+        <div class="hero-text">
+          <div class="eyebrow">Schutzstatus</div>
+          <h2 id="hero-title">Wird geladen …</h2>
+          <ul class="hint-list" id="hero-hints"></ul>
+          <div class="btn-row">
+            <button class="btn primary" type="button" data-scan="quick"><i data-icon="scan"></i>Schnellscan starten</button>
+            <a class="btn ghost" href="#/abwehr"><i data-icon="radar"></i>Hacker-Check</a>
+          </div>
+        </div>
+        <div class="score">
+          <svg viewBox="0 0 120 120" class="score-ring" aria-hidden="true">
+            <circle cx="60" cy="60" r="52" class="track"/>
+            <circle cx="60" cy="60" r="52" class="bar" id="score-bar"/>
+          </svg>
+          <div class="score-num"><b id="score-num">–</b><small>von 100</small></div>
+          <div class="score-label">Sicherheits-Score</div>
+        </div>
+      </div>
+
+      <div class="tiles">
+        <a class="tile" href="#/scanner" id="tile-threats"><i data-icon="bug"></i><b id="t-threats">–</b><span>Offene Bedrohungen</span></a>
+        <a class="tile" href="#/quarantaene"><i data-icon="box"></i><b id="t-quarantine">–</b><span>In Quarantäne</span></a>
+        <a class="tile" href="#/abwehr" id="tile-net"><i data-icon="globe"></i><b id="t-conns">–</b><span id="t-conns-sub">Aktive Verbindungen</span></a>
+        <a class="tile" href="#/abwehr"><i data-icon="ban"></i><b id="t-blocked">–</b><span>Gesperrte IPs</span></a>
+        <a class="tile" href="#/einstellungen"><i data-icon="shield"></i><b id="t-sigs">–</b><span id="t-sigs-sub">Signaturen</span></a>
+        <a class="tile" href="#/scanner"><i data-icon="clock"></i><b id="t-last">–</b><span id="t-last-sub">Letzter Scan</span></a>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head"><h3>Schutzmodule</h3></div>
+          <div class="toggles" id="module-toggles">
+            <label class="toggle-row">
+              <span class="tr-icon"><i data-icon="activity"></i></span>
+              <span class="tr-text"><b>Echtzeitschutz</b><small>Prüft neue Dateien in Downloads &amp; Desktop sofort</small></span>
+              <input type="checkbox" class="switch" data-setting="realtime">
+            </label>
+            <label class="toggle-row">
+              <span class="tr-icon"><i data-icon="radar"></i></span>
+              <span class="tr-text"><b>Netzwerk-Wächter</b><small>Überwacht Verbindungen und Prozesse im Hintergrund</small></span>
+              <input type="checkbox" class="switch" data-setting="guard">
+            </label>
+            <label class="toggle-row">
+              <span class="tr-icon"><i data-icon="kick"></i></span>
+              <span class="tr-text"><b>Automatischer Rauswurf</b><small>Wirft gefährliche Eindringlinge ohne Rückfrage raus</small></span>
+              <input type="checkbox" class="switch" data-setting="auto_kick">
+            </label>
+            <label class="toggle-row">
+              <span class="tr-icon"><i data-icon="box"></i></span>
+              <span class="tr-text"><b>Auto-Quarantäne</b><small>Sperrt gefährliche Downloads sofort weg</small></span>
+              <input type="checkbox" class="switch" data-setting="auto_quarantine">
+            </label>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Dein Computer</h3><span class="muted small" id="sys-platform"></span></div>
+          <div class="meters">
+            <div class="meter"><div class="meter-top"><span>Prozessor</span><b id="m-cpu">–</b></div><div class="meter-bar"><span id="m-cpu-bar"></span></div></div>
+            <div class="meter"><div class="meter-top"><span>Arbeitsspeicher</span><b id="m-ram">–</b></div><div class="meter-bar"><span id="m-ram-bar"></span></div></div>
+          </div>
+          <dl class="facts" id="sys-facts"></dl>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Letzte Ereignisse</h3><a class="link" href="#/protokoll">Alle anzeigen →</a></div>
+        <ul class="timeline" id="dash-events"></ul>
+      </div>
+    </section>
+
+    <!-- ================================ SCANNER ================================ -->
+    <section class="page" data-page="scanner" hidden>
+      <div class="scan-modes" id="scan-modes">
+        <button class="mode-card" type="button" data-scan="quick">
+          <span class="mode-icon"><i data-icon="zap"></i></span>
+          <b>Schnellscan</b>
+          <small>Downloads, Desktop, Temp-Ordner und Autostart – dort verstecken sich die meisten Schädlinge.</small>
+          <span class="mode-go">Starten →</span>
+        </button>
+        <button class="mode-card" type="button" data-scan="full">
+          <span class="mode-icon"><i data-icon="shield"></i></span>
+          <b>Vollständiger Scan</b>
+          <small>Prüft deinen kompletten Benutzerordner. Dauert länger, ist dafür gründlich.</small>
+          <span class="mode-go">Starten →</span>
+        </button>
+        <form class="mode-card custom" id="custom-scan">
+          <span class="mode-icon"><i data-icon="folder"></i></span>
+          <b>Eigener Ordner</b>
+          <small>Prüfe einen bestimmten Ordner, USB-Stick oder eine einzelne Datei.</small>
+          <span class="input-row"><input type="text" id="custom-path" placeholder="z. B. D:\ oder C:\Users\Du\Spiele" autocomplete="off" spellcheck="false"><button class="btn primary sm" type="submit">Scannen</button></span>
+        </form>
+      </div>
+
+      <div class="card scan-live" id="scan-live" hidden>
+        <div class="scan-visual">
+          <div class="sweep"></div>
+          <svg viewBox="0 0 200 200" class="progress-ring" aria-hidden="true">
+            <circle cx="100" cy="100" r="88" class="track"/>
+            <circle cx="100" cy="100" r="88" class="bar" id="scan-bar"/>
+          </svg>
+          <div class="scan-pct"><b id="scan-pct">0</b><small>%</small></div>
+        </div>
+        <div class="scan-info">
+          <div class="eyebrow" id="scan-label">Schnellscan</div>
+          <h2 id="scan-phase">Dateien werden gesammelt …</h2>
+          <div class="scan-current" id="scan-current"></div>
+          <div class="stat-grid">
+            <div><b id="scan-files">0</b><span>Dateien geprüft</span></div>
+            <div><b id="scan-threats">0</b><span>Bedrohungen</span></div>
+            <div><b id="scan-speed">0</b><span>Dateien / Sekunde</span></div>
+            <div><b id="scan-time">0 s</b><span>Dauer</span></div>
+          </div>
+          <button class="btn ghost" type="button" id="scan-stop"><i data-icon="stop"></i>Scan abbrechen</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h3>Gefundene Bedrohungen</h3>
+          <div class="btn-row">
+            <button class="btn primary sm" type="button" id="quarantine-all" hidden><i data-icon="box"></i>Alle in Quarantäne</button>
+          </div>
+        </div>
+        <div id="threat-list" class="threat-list"></div>
+      </div>
+
+      <div class="card subtle eicar">
+        <span class="mode-icon"><i data-icon="flask"></i></span>
+        <div>
+          <b>Teste deinen Schutz</b>
+          <p class="muted">Erzeugt die offizielle, völlig harmlose EICAR-Testdatei in deinem Download-Ordner. Jedes Antivirus-Programm erkennt sie – Schutzschild sollte sofort Alarm schlagen.</p>
+        </div>
+        <button class="btn ghost" type="button" id="eicar-btn">Testvirus erzeugen</button>
+      </div>
+    </section>
+
+    <!-- ============================== HACKER-ABWEHR ============================== -->
+    <section class="page" data-page="abwehr" hidden>
+      <div class="card net-hero" id="net-hero" data-level="ok">
+        <div class="radar" aria-hidden="true">
+          <div class="radar-grid"></div>
+          <div class="radar-sweep"></div>
+          <div class="radar-dots" id="radar-dots"></div>
+          <div class="radar-core"><i data-icon="monitor"></i></div>
+        </div>
+        <div class="net-summary">
+          <div class="eyebrow">Netzwerk-Wächter</div>
+          <h2 id="net-title">Netzwerk wird gescannt …</h2>
+          <p class="muted" id="net-sub"></p>
+          <div class="net-stats">
+            <div><b id="ns-est">–</b><span>Verbindungen</span></div>
+            <div><b id="ns-net">–</b><span>ins Internet</span></div>
+            <div><b id="ns-listen">–</b><span>offene Ports</span></div>
+            <div class="ns-bad"><b id="ns-bad">–</b><span>gefährlich</span></div>
+          </div>
+          <div class="btn-row">
+            <button class="btn danger big" type="button" id="kick-all"><i data-icon="zap"></i>Alle Eindringlinge rauswerfen</button>
+            <button class="btn ghost" type="button" id="net-refresh"><i data-icon="refresh"></i>Aktualisieren</button>
+          </div>
+          <div class="notice" id="net-admin-note" hidden></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head wrap">
+          <h3>Verbindungen</h3>
+          <div class="toolbar">
+            <div class="chips" id="net-filter">
+              <button type="button" data-f="wichtig" class="on">Wichtig</button>
+              <button type="button" data-f="gefahr">Verdächtig</button>
+              <button type="button" data-f="internet">Internet</button>
+              <button type="button" data-f="lauscht">Offene Ports</button>
+              <button type="button" data-f="alle">Alle</button>
+            </div>
+            <input type="search" class="search" id="net-search" placeholder="Programm, IP oder Port …">
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="table" id="net-table">
+            <thead><tr><th>Risiko</th><th>Programm</th><th>Richtung</th><th>Gegenstelle</th><th>Status</th><th></th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p class="empty" id="net-empty" hidden></p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head"><h3>Sperrliste</h3><span class="muted small" id="fw-backend"></span></div>
+          <form class="inline-form" id="block-form">
+            <input type="text" id="block-ip" placeholder="IP-Adresse, z. B. 45.13.12.7" autocomplete="off" spellcheck="false">
+            <input type="text" id="block-reason" placeholder="Grund (optional)" autocomplete="off">
+            <button class="btn danger sm" type="submit"><i data-icon="ban"></i>Sperren</button>
+          </form>
+          <ul class="block-list" id="block-list"></ul>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>So funktioniert der Rauswurf</h3></div>
+          <ol class="steps">
+            <li><span>1</span><div><b>Firewall-Sperre</b><small>Die IP des Angreifers wird in der Firewall gesperrt – er kommt nicht wieder rein.</small></div></li>
+            <li><span>2</span><div><b>Verbindung kappen</b><small>Die bestehende Verbindung wird sofort getrennt.</small></div></li>
+            <li><span>3</span><div><b>Programm beenden</b><small>Das Programm hinter der Verbindung (z. B. eine Hintertür) wird geschlossen.</small></div></li>
+          </ol>
+          <p class="muted small">Tipp: Hat dich jemand am Telefon aufgefordert, AnyDesk oder TeamViewer zu installieren? Das ist fast immer Betrug – wirf ihn raus und lege auf!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================ PROZESSE ================================ -->
+    <section class="page" data-page="prozesse" hidden>
+      <div class="card">
+        <div class="card-head wrap">
+          <h3 id="proc-head">Laufende Programme</h3>
+          <div class="toolbar">
+            <div class="chips" id="proc-filter">
+              <button type="button" data-f="alle" class="on">Alle</button>
+              <button type="button" data-f="gefahr">Verdächtig</button>
+            </div>
+            <select id="proc-sort" class="select" aria-label="Sortierung">
+              <option value="risk">Nach Risiko</option>
+              <option value="cpu">Nach CPU</option>
+              <option value="mem">Nach Speicher</option>
+              <option value="name">Nach Name</option>
+            </select>
+            <input type="search" class="search" id="proc-search" placeholder="Name, PID oder Pfad …">
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="table" id="proc-table">
+            <thead><tr><th>Risiko</th><th>Programm</th><th class="num">CPU</th><th class="num">Speicher</th><th>Benutzer</th><th></th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p class="empty" id="proc-empty" hidden></p>
+      </div>
+    </section>
+
+    <!-- =============================== QUARANTÄNE =============================== -->
+    <section class="page" data-page="quarantaene" hidden>
+      <div class="card subtle info-card">
+        <span class="mode-icon"><i data-icon="lock"></i></span>
+        <div><b>Hier sind gefährliche Dateien sicher weggesperrt.</b>
+          <p class="muted">Sie wurden verschlüsselt und können nichts mehr anrichten. Wiederherstellen solltest du nur Dateien, bei denen du dir ganz sicher bist.</p></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Quarantäne</h3><span class="muted small" id="q-count"></span></div>
+        <div id="q-list" class="q-list"></div>
+      </div>
+    </section>
+
+    <!-- ================================ PROTOKOLL ================================ -->
+    <section class="page" data-page="protokoll" hidden>
+      <div class="card">
+        <div class="card-head wrap">
+          <h3>Protokoll</h3>
+          <div class="toolbar">
+            <div class="chips" id="log-filter">
+              <button type="button" data-f="alle" class="on">Alle</button>
+              <button type="button" data-f="danger">Gefahren</button>
+              <button type="button" data-f="warn">Warnungen</button>
+              <button type="button" data-f="ok">Erfolge</button>
+            </div>
+            <button class="btn ghost sm" type="button" id="log-clear"><i data-icon="trash"></i>Leeren</button>
+          </div>
+        </div>
+        <ul class="timeline big" id="log-list"></ul>
+      </div>
+    </section>
+
+    <!-- ============================== EINSTELLUNGEN ============================== -->
+    <section class="page" data-page="einstellungen" hidden>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head"><h3>Schutz</h3></div>
+          <div class="toggles">
+            <label class="toggle-row"><span class="tr-text"><b>Echtzeitschutz</b><small>Neue Dateien in überwachten Ordnern sofort prüfen</small></span><input type="checkbox" class="switch" data-setting="realtime"></label>
+            <label class="toggle-row"><span class="tr-text"><b>Auto-Quarantäne</b><small>Gefährliche Funde direkt wegsperren</small></span><input type="checkbox" class="switch" data-setting="auto_quarantine"></label>
+            <label class="toggle-row"><span class="tr-text"><b>Netzwerk-Wächter</b><small>Verbindungen &amp; Prozesse überwachen</small></span><input type="checkbox" class="switch" data-setting="guard"></label>
+            <label class="toggle-row"><span class="tr-text"><b>Automatischer Rauswurf</b><small>Gefährliche Verbindungen ohne Rückfrage trennen</small></span><input type="checkbox" class="switch" data-setting="auto_kick"></label>
+            <label class="toggle-row"><span class="tr-text"><b>Desktop-Benachrichtigungen</b><small>Bei Gefahr auch dann melden, wenn das Fenster im Hintergrund ist</small></span><input type="checkbox" class="switch" data-setting="notifications"></label>
+          </div>
+          <div class="field-row">
+            <label for="max-mb">Maximale Dateigröße für Prüfsummen</label>
+            <span class="input-unit"><input type="number" id="max-mb" min="1" max="4096"><span>MB</span></span>
+          </div>
+          <div class="field-row">
+            <label for="guard-int">Wächter prüft alle</label>
+            <span class="input-unit"><input type="number" id="guard-int" min="2" max="60"><span>Sek.</span></span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3>Signaturen</h3></div>
+          <div class="sig-stats" id="sig-stats"></div>
+          <button class="btn primary" type="button" id="sig-update"><i data-icon="download"></i>Online aktualisieren (MalwareBazaar)</button>
+          <p class="muted small">Lädt die Prüfsummen der neuesten Schadsoftware von abuse.ch herunter. Dabei werden keine Daten von dir verschickt.</p>
+          <form class="inline-form" id="sig-form">
+            <input type="text" id="sig-hash" placeholder="SHA-256 oder MD5 einer Schadsoftware" autocomplete="off" spellcheck="false">
+            <input type="text" id="sig-name" placeholder="Name (optional)" autocomplete="off">
+            <button class="btn ghost sm" type="submit"><i data-icon="plus"></i>Hinzufügen</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head"><h3>Überwachte Ordner</h3><span class="muted small">Echtzeitschutz</span></div>
+          <ul class="path-list" id="watch-list"></ul>
+          <form class="inline-form" id="watch-form"><input type="text" id="watch-input" placeholder="Ordner hinzufügen …" spellcheck="false"><button class="btn ghost sm" type="submit"><i data-icon="plus"></i>Hinzufügen</button></form>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Ausnahmen</h3><span class="muted small">werden nie gescannt</span></div>
+          <ul class="path-list" id="excl-list"></ul>
+          <form class="inline-form" id="excl-form"><input type="text" id="excl-input" placeholder="Ordner oder Datei ausnehmen …" spellcheck="false"><button class="btn ghost sm" type="submit"><i data-icon="plus"></i>Hinzufügen</button></form>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Programm</h3></div>
+        <dl class="facts" id="app-facts"></dl>
+        <div class="btn-row">
+          <button class="btn ghost" type="button" id="elevate-btn"><i data-icon="lock"></i>Als Administrator neu starten</button>
+          <button class="btn danger" type="button" id="quit-btn"><i data-icon="power"></i>Schutzschild beenden</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<div class="modal-root" id="modal-root"></div>
+<div class="overlay" id="offline" hidden>
+  <div class="overlay-box">
+    <i data-icon="alert"></i>
+    <h2 id="offline-title">Verbindung zu Schutzschild verloren</h2>
+    <p class="muted" id="offline-text">Läuft das Programm noch? Starte Schutzschild neu – diese Seite verbindet sich automatisch wieder.</p>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

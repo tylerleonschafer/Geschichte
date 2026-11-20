@@ -1,0 +1,11 @@
+# Schutzschild – eingebaute Prüfsummen-Signaturen
+#
+# Format: <SHA-256 oder MD5>  <Name der Schadsoftware>
+# Zeilen mit # sind Kommentare.
+#
+# Weitere Signaturen bekommst du über "Einstellungen → Signaturen online
+# aktualisieren" (MalwareBazaar von abuse.ch) oder indem du eigene Prüfsummen
+# einträgst. Eigene Einträge landen in ~/.schutzschild/eigene_signaturen.txt.
+
+275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f  EICAR-Testvirus
+44d88612fea8a8f36de82e1278abb02f  EICAR-Testvirus
